@@ -9,11 +9,11 @@ export class AuthService {
 
   }
 
-  getLoggedInUserId() {
-    let token = localStorage.getItem("jwt")
-    return this.jwtService.decodeToken(token)[tokenSoapLink + "sid"]
+  //getLoggedInUserId() {
+  //  let token = localStorage.getItem("jwt")
+  //  return this.jwtService.decodeToken(token)[tokenSoapLink + "sid"]
 
-  }
+  //}
 
   getLoggedInUserUsername() {
     let token = localStorage.getItem("jwt")

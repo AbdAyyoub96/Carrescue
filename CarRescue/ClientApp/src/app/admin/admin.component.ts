@@ -12,7 +12,6 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { HttpClient } from 'selenium-webdriver/http';
 import { User } from '../modelInterfaces';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AdsDialogComponent } from '../ads-dialog/ads-dialog.component';
 import { NotificationService } from '../services/notification.service';
 
 @Component({
@@ -86,11 +85,7 @@ export class AdminComponent {
       console.log("failed");
     })
   }
-  AdsDialogRef: MatDialogRef<AdsDialogComponent>;
-  openAdsDialog() {
-    this.AdsDialogRef = this.dialog.open(AdsDialogComponent);
-    this.AdsDialogRef.afterClosed().subscribe(data => this.fillAd(data));
-  }
+  
   fillAd(AD) {
 
     console.log("bla bla",AD);
