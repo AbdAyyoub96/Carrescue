@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarRescue.Models;
-using CarRescue.Models.Enums;
 
 namespace CarRescue.Controllers
 {
@@ -15,6 +14,8 @@ namespace CarRescue.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly CarRescueContext _context;
+        private OrderProcesses orderProcesses = new OrderProcesses();
+
 
         public OrdersController(CarRescueContext context)
         {
@@ -33,9 +34,20 @@ namespace CarRescue.Controllers
         public async Task<ActionResult<IEnumerable<Order>>> GetAllOrdersByCategory(int typeId)
         {
             // and status != closed
-            return await _context.Order.Where(x=>x.ServiceTypeId == typeId).Include(x=>x.User).ToListAsync();
+            return await _context.Order.Where(x=>x.ServiceTypeId == typeId).ToListAsync();
         }
 
+        [HttpGet]
+        [Route("GetAllOrdersByUser/{UserId}")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetAllOrdersByUser(int UserId)
+        {
+            return await _context.Order
+                            .Where(x => x.UserId == UserId)
+                            .Include(x => x.ServiceType)
+                            .Include(x => x.User)
+                            .Include(x => x.OrderOffer)
+                            .ToListAsync();
+        }
 
         [HttpGet]
         [Route("GetAllOrdersForProvider/{UserId}")]
@@ -48,6 +60,7 @@ namespace CarRescue.Controllers
                                              && x.State == user.State
                                              && x.Status == (int)Models.Enums.OrderStatus.Pending)
                                     .Include(x => x.ServiceType)
+                                    .Include(x => x.User)
                                     .Include(x => x.OrderOffer)
                                     .ToListAsync();
             return await providerOrders;
@@ -72,6 +85,21 @@ namespace CarRescue.Controllers
             return order;
         }
 
+        [HttpGet]
+        [Route("CancelOrder/{id}")]
+        public async Task<ActionResult<Order>> CancelOrder(int id)
+        {
+            var order = await _context.Order.FirstOrDefaultAsync(x => x.Id == id);
+
+            orderProcesses.CloseOrder(order.Id , (int) Models.Enums.OrderStatus.Cancled);
+
+            if (order == null)
+            {
+                return BadRequest("Error!");
+            }
+
+            return order;
+        }
         [HttpPut]
         [Route("EditOrder/{id}")]
         public async Task<IActionResult> EditOrder(int id, Order order)
@@ -105,12 +133,20 @@ namespace CarRescue.Controllers
         // POST: api/Orders
         [HttpPost]
         [Route("PostOrder")]
-        public async Task<ActionResult<Order>> PostOrder([FromBody]Order order)
+        public async Task<ActionResult<Order>> PostOrder([FromBody] Order order)
         {
             order.CreatedDate = DateTime.Now;
-            order.Status =(int) OrderStatus.Pending;
-            _context.Order.Add(order);
-            await _context.SaveChangesAsync();
+            order.Status = (int) Models.Enums.OrderStatus.Pending;
+            try
+            {
+                _context.Order.Add(order);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Erorr!");
+            }
+          
 
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }
