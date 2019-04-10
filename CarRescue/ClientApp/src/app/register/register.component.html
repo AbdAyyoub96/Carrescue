@@ -1,5 +1,6 @@
 
 <div class="container">
+  <br /><br /><br /><br />
   <div class="row align-items-center">
     <div class="col">
 
@@ -10,17 +11,10 @@
           <h4 class="card-title">{{ 'HOME.Signup' | translate }}</h4>
 
         </mat-card-header>
-        <div class="row d-flex justify-content-center p-1">
-          <a href="#" class="btn btn-primary btn-circle btn-lg m-1"><i class="fa fa-facebook"></i></a>
-          <a href="#" class="btn btn-danger btn-circle btn-lg m-1"><i class="fa fa-google"></i></a>
-          <a href="#" class="btn btn-info btn-circle btn-lg m-1"><i class="fa fa-twitter"></i></a>
-        </div>
-        <div class="row">
-          <div class="col-md-4"><hr /></div>
-          <div class="col text-center">{{ 'HOME.Or' | translate }}</div>
-          <div class="col-md-4"><hr /> </div>
-        </div>
+       
+       <hr />
         <form [formGroup]="signUpForm">
+
           <br />
 
           <div class="row">
@@ -113,24 +107,22 @@
             <div class="col-md-2"></div>
             <div class="col-md-4">
               <mat-form-field>
-                <mat-select placeholder="{{ 'HOME.country' | translate }}" #country [formControl]="Country">
-                  <mat-option *ngFor="let countr of countries" [value]="countr.viewValue">
-                    {{countr.viewValue}}
+                <mat-select placeholder="{{ 'HOME.userType' | translate }}" #userstypes [formControl]="userType">
+                  <mat-option *ngFor="let type of types" [value]="type.value">
+                    {{type.name}}
 
                   </mat-option>
-
                 </mat-select>
 
-                <mat-error *ngIf="Country.hasError('required')">
-                  {{ 'HOME.Countryisrequired' | translate }}
+                <mat-error *ngIf="userType.hasError('required')">
+                  {{ 'HOME.userTypeisrequired' | translate }}
                 </mat-error>
               </mat-form-field>
             </div>
             <br />
 
             <div class="col-md-4">
-              <mat-form-field>
-                <span matPrefix>{{filterItemsOfType(country.value)}} &nbsp;</span>
+              <mat-form-field>              
 
                 <input matInput placeholder="{{ 'HOME.MobileNumber' | translate }}" formControlName="MobileNumber" required>
 
@@ -143,22 +135,29 @@
 
             </div>
           </div>
-
-
-
-
-          <hr />
-          <div class="row">
-            <div class="col-md-9"></div>
-            <div class="col-md-2">
-              <button mat-raised-button color="primary" [disabled]="signUpForm.invalid" (click)="CreateNewUser()">
-                {{ 'HOME.Signup' | translate }}
-              </button>
+          <div class="row" *ngIf="userstypes.value!=1 && userstypes.value!=null">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <mat-hint for="exampleFormControlFile1">Upload Photo</mat-hint>
+              <input type="file" class="form-control-file" id="exampleFormControlFile1" required>
             </div>
-          </div>
+            </div>
 
-          <br />
-        </form>
+
+
+
+            <hr />
+            <div class="row">
+              <div class="col-md-9"></div>
+              <div class="col-md-2">
+                <button mat-raised-button color="primary" [disabled]="signUpForm.invalid" (click)="CreateNewUser()">
+                  {{ 'HOME.Signup' | translate }}
+                </button>
+              </div>
+            </div>
+
+            <br />
+</form>
 
       </mat-card>
     </div>

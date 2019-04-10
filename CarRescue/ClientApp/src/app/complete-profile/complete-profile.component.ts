@@ -37,12 +37,12 @@ export class CompleteProfileComponent implements OnInit {
 
   
   ngOnInit() {
-    this.userService.getUserDetialsById(this.authService.getLoggedInUserId()).subscribe(response => {
-      this.user = response;
-      console.log(this.user);
+    //this.userService.getUserDetialsById(this.authService.getLoggedInUserId()).subscribe(response => {
+    //  this.user = response;
+    //  console.log(this.user);
 
 
-    })
+    //})
     
   }
   constructor(

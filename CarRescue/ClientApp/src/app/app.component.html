@@ -10,18 +10,8 @@
             <mat-icon *ngIf="isExpanded  && translate.currentLang === 'ar'">chevron_right</mat-icon>
           </button>
         </mat-list-item>
-        <mat-list-item>
-          <a mat-list-item [routerLink]="['/trips']" routerLinkActive="active-link">
-            <i mat-list-icon class="material-icons">card_travel</i>
-            <p matLine *ngIf="isExpanded">{{ 'HOME.TripsLabel' | translate }}</p>
-          </a>
-        </mat-list-item>
-        <mat-list-item>
-          <a mat-list-item [routerLink]="['/new-trip']" routerLinkActive="active-link">
-            <i mat-list-icon class="material-icons">directions_car</i>
-            <p matLine *ngIf="isExpanded">{{ 'HOME.newTripLabel' | translate }}</p>
-          </a>
-        </mat-list-item>
+       
+      
       </mat-nav-list>
     </mat-sidenav>
 
@@ -64,9 +54,7 @@
           <button mat-menu-item (click)="translate.use('ar'); setPrefLang('ar')">
             <span>العربية</span>
           </button>
-          <button mat-menu-item (click)="translate.use('fr'); setPrefLang('fr')">
-            <span>Française</span>
-          </button>
+         
           <button mat-menu-item (click)="translate.use('en'); setPrefLang('en')">
             <span>English</span>
           </button>
