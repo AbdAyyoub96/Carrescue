@@ -14,7 +14,7 @@ namespace CarRescue.Controllers
     public class OrderOffersController : ControllerBase
     {
         private readonly CarRescueContext _context;
-
+        private OrderProcesses orderProcesses = new OrderProcesses();
         public OrderOffersController(CarRescueContext context)
         {
             _context = context;
@@ -29,8 +29,8 @@ namespace CarRescue.Controllers
         }
 
         [HttpGet]
-        [Route("AcceptOffer/{id}")]
-        public ActionResult AcceptOffer(int id)
+        [Route("ChangeOfferStatus/{id}/{status}")]
+        public ActionResult ChangeOfferStatus(int id , int status)
         {
             var offer = _context.OrderOffer.Find(id);
 
@@ -39,11 +39,17 @@ namespace CarRescue.Controllers
                 return BadRequest("Offer Not Found !");
             }
 
-            offer.Status = 1 ; // Accepted
+            offer.Status = status; // Accepted
             try
             {
                 _context.Entry(offer).State = EntityState.Modified;
                 _context.SaveChanges();
+
+                if (offer.Status == (int)Models.Enums.OfferStatus.Accepted)
+                {
+                    orderProcesses.CloseOrder(offer.OrderId , (int)Models.Enums.OrderStatus.Served);
+                }
+
             }
             catch (Exception e)
             {
@@ -112,12 +118,21 @@ namespace CarRescue.Controllers
         // POST: api/OrderOffers
         [HttpPost]
         [Route("CreateOffer")]
-        public async Task<ActionResult<OrderOffer>> PostOrderOffer(OrderOffer orderOffer)
+        public async Task<ActionResult<OrderOffer>> PostOrderOffer([FromBody] OrderOffer orderOffer)
         {
-            orderOffer.Status = 1; // Pending
+            orderOffer.Status = (int) Models.Enums.OfferStatus.Pending; // Pending
 
-            _context.OrderOffer.Add(orderOffer);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.OrderOffer.Add(orderOffer);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+
 
             return CreatedAtAction("GetOrderOffer", new { id = orderOffer.Id }, orderOffer);
         }
