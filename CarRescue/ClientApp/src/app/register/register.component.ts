@@ -12,6 +12,11 @@ export interface UserTypes {
   value: string;
  
 }
+export interface States {
+  name: string;
+  value: number;
+
+}
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
@@ -27,14 +32,24 @@ export class RegisterComponent implements OnInit {
     username: new FormControl('', [Validators.required,Validators.minLength(6)]),
     MobileNumber: new FormControl('', Validators.required),
     rePass: new FormControl('', Validators.required),
-    userTypeId: new FormControl('', Validators.required)
+    userTypeId: new FormControl('', Validators.required),
+    attachment: new FormControl(''),
+    state: new FormControl('', Validators.required)
 
   }, { validators: this.passValidator })
 
   types;
-
+  states: States[] = [
+    { name: 'Amman', value: 1 }, { name: 'Zarqa', value: 2 },
+    { name: 'Irbid', value: 3 }, { name: 'Jerash', value: 4 },
+    { name: 'Ajloun', value: 5 }, { name: 'Mafraq', value: 6 },
+    { name: 'Madaba', value: 7 }, { name: 'Salt', value: 8 },
+    { name: 'Al-karak', value: 9 }, { name: 'Tafila', value: 10 },
+    { name: 'Maan', value: 11 }, { name: 'Aqaba', value: 12 }
+  ];
+  attach;
   hide = true;
-  
+  url;
   constructor(
     private translate: TranslateService,
     private userService: UserService,
@@ -48,7 +63,34 @@ export class RegisterComponent implements OnInit {
   {
     this.getUserTypes();
   }
- 
+  readUrl(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = (event: ProgressEvent) => {
+        this.url = (<FileReader>event.target).result.toString();
+
+      }
+      this.saveUserPhoto(event.target.files[0]);
+
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+  saveUserPhoto(file) {
+    
+    this.userService.saveProfilePic(file).subscribe(response => {
+      this.attach = response;
+      this.signUpForm.controls["attachment"].setValue(this.attach.fileName);
+      console.log(this.signUpForm.value)
+      this.notificationService.createNotificationService('success', 'Uploading Success', 'Profile picture uploaded successfully');      
+      console.log(response)
+     
+    }, error => {
+        this.notificationService.createNotificationService('danger', 'Uploading Error!', 'Error in uploading your profile pic');
+
+
+    });
+  }
   getUserTypes() {
     this.userService.getUserTypes().subscribe(response => {
       this.types = response;
@@ -60,7 +102,9 @@ export class RegisterComponent implements OnInit {
   get fullName() {   
     return this.signUpForm.get('fullName') as FormControl;
   }
-  
+  get attachment() {
+    return this.signUpForm.get('attachment') as FormControl;
+  }
   
   get username() {
     return this.signUpForm.get('username') as FormControl;
@@ -82,6 +126,9 @@ export class RegisterComponent implements OnInit {
   get userTypeId() {
     return this.signUpForm.get('userTypeId') as FormControl;
   }
+  get state() {
+    return this.signUpForm.get('state') as FormControl;
+  }
   
   get rePass() {
     return this.signUpForm.get('rePass') as FormControl;
@@ -94,7 +141,7 @@ export class RegisterComponent implements OnInit {
       this.notificationService.createNotificationService('success', 'Signup Success', 'Your account has been created');
 
      setTimeout(() => {
-        this.router.navigate(["/"]);
+        this.router.navigate(["/login"]);
       }, 5000);
       
     }, error => {

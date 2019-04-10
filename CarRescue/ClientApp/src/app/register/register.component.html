@@ -138,8 +138,26 @@
           <div class="row" *ngIf="userstypes.value!=1 && userstypes.value!=null">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <mat-hint for="exampleFormControlFile1">Upload Photo</mat-hint>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1" required>
+              <div class="row">
+                <mat-hint for="exampleFormControlFile1">Upload Photo</mat-hint>
+                <div class="avatar-upload">
+                  <div class="avatar-edit">
+                    <input type='file' id="imageUpload" (change)=readUrl($event) accept=".png, .jpg, .jpeg" />
+                  </div>
+                </div>
+                <mat-form-field>
+                  <mat-select placeholder="{{ 'HOME.state' | translate }}" [formControl]="state">
+                    <mat-option *ngFor="let state of states" [value]="state.value">
+                      {{state.name}}
+
+                    </mat-option>
+                  </mat-select>
+
+                  <mat-error *ngIf="state.hasError('required')">
+                    {{ 'HOME.stateRequired' | translate }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
             </div>
             </div>
 

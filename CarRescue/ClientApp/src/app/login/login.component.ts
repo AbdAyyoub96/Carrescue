@@ -22,7 +22,7 @@ export class LoginComponent {
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   })
-
+  user;
   constructor(public translate: TranslateService,
               private userService: UserService,
              
@@ -33,17 +33,9 @@ export class LoginComponent {
     translate.use(localStorage.getItem('lang') !== null || localStorage.getItem('lang') !== null ? localStorage.getItem('lang') : 'en');
    
   }
-  onSignIn(googleUser) {
-    var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-  }
+  
   
   ngOnInit() {
-
-
   }
 
   get username() {
@@ -58,10 +50,17 @@ export class LoginComponent {
 
   login() {
     this.userService.login(this.loginForm.value).subscribe(response => {
-      let token = (<any>response).token;
-      localStorage.setItem("jwt", token);
+      this.user = response;
+      let token = JSON.stringify(this.user);
+      localStorage.setItem("user", token);
       console.log(token)
-      this.router.navigate(["/"]);
+      if (this.user.userTypeId == 1) {
+        this.router.navigate(["/new-order/" + this.user.id]);
+      }
+      else
+      {
+        this.router.navigate(["/orders/" + this.user.id]);
+      }
     }, error => {
         this.notificationService.createNotificationService('error', 'Login Failed', 'Username or password is wrong');
     });

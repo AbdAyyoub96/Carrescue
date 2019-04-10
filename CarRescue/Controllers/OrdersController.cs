@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarRescue.Models;
+using CarRescue.Models.Enums;
 
 namespace CarRescue.Controllers
 {
@@ -32,7 +33,7 @@ namespace CarRescue.Controllers
         public async Task<ActionResult<IEnumerable<Order>>> GetAllOrdersByCategory(int typeId)
         {
             // and status != closed
-            return await _context.Order.Where(x=>x.ServiceTypeId == typeId).ToListAsync();
+            return await _context.Order.Where(x=>x.ServiceTypeId == typeId).Include(x=>x.User).ToListAsync();
         }
 
 
@@ -104,8 +105,10 @@ namespace CarRescue.Controllers
         // POST: api/Orders
         [HttpPost]
         [Route("PostOrder")]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public async Task<ActionResult<Order>> PostOrder([FromBody]Order order)
         {
+            order.CreatedDate = DateTime.Now;
+            order.Status =(int) OrderStatus.Pending;
             _context.Order.Add(order);
             await _context.SaveChangesAsync();
 

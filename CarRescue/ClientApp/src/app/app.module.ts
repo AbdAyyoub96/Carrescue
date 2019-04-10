@@ -31,6 +31,9 @@ import { RatingService } from './services/rating.service';
 import { TripRequestService } from './services/trip-request.service';
 import { AdminService } from './services/admin.service';
 import { ReportComponent } from './report/report.component';
+import { NewOrderComponent } from './new-order/new-order.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrderService } from './services/order.service';
 
 // Configs 
 
@@ -50,10 +53,10 @@ export function tokenGetter() {
     AdminComponent,
     LoginComponent,
     RegisterComponent,
-  
+    NewOrderComponent,
     ProfileComponent,
     RatingComponent,
-   
+    OrdersComponent,
     FilteringComponent,
     CompleteProfileComponent,
    
@@ -92,7 +95,8 @@ export function tokenGetter() {
       { path: 'login', component: LoginComponent },
       { path: 'admin', component: AdminComponent },
       { path: 'register', component: RegisterComponent },
-      
+      { path: 'new-order/:id', component: NewOrderComponent },
+      { path: 'orders/:id', component: OrdersComponent },  
       { path: 'profile/:id', component: ProfileComponent },
       { path: 'rating', component: RatingComponent },
       { path: 'filtering', component: FilteringComponent },
@@ -111,7 +115,8 @@ export function tokenGetter() {
     RatingService,
     UserService,
     TripRequestService,
-    AdminService
+    AdminService,
+    OrderService
   ],
   bootstrap: [AppComponent]
 })

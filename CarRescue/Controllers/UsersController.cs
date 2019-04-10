@@ -57,14 +57,14 @@ namespace CarRescue.Controllers
         [Route("Login")]
         public async Task<ActionResult<User>> Login([FromBody] User user)
         {
-            var userInDb = await _context.User.FirstOrDefaultAsync( x=>x.Username == user.Username || x.Password == user.Password );
+            var userInDb = await _context.User.FirstOrDefaultAsync( x=>x.Username == user.Username && x.Password == user.Password );
 
-            if (user == null)
+            if (userInDb == null)
             {
                 return BadRequest("Invalid Username or Password");
             }
 
-            return user;
+            return userInDb;
         }
 
         [HttpPost]
@@ -107,6 +107,12 @@ namespace CarRescue.Controllers
         public async Task<ActionResult<IEnumerable<UserType>>> GetUserTypes()
         {
             return await _context.UserType.Where(x=>x.Status == (int) UserTypesStatus.Active).ToListAsync();
+        }
+        [HttpGet]
+        [Route("GetUserServices")]
+        public async Task<ActionResult<IEnumerable<Service>>> GetUserServices()
+        {
+            return await _context.Service.ToListAsync();
         }
 
         // PUT: api/Users/5

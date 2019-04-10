@@ -12,14 +12,14 @@ import { User } from '../modelInterfaces';
 //import { User } from 'app/ModelInterfaces/ModelInterface';
 
 const baseUrl = 'api/Users/'
-const getUserRoute = 'GetUser/';
+const getUserRoute = 'GetUserById/';
 const updateUserRoute = 'UpdateUserInfo';
 const signupRoute = 'SignUp';
 const signinRoute = 'signin';
 const getUsersRoute = 'GetAllUsers';
 const getUserTypesRoute = 'GetUserTypes';
-
-
+const postAttachmentRoute = "PostUserAttachments/";
+const getUserServicesRoute = "GetUserServices";
 const httpOptions = {
     headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -31,10 +31,25 @@ export class UserService {
   constructor(private httpClient: HttpClient, private router: Router) {
 
   }
+  //----------------------------------------------------------------------------------------------------------
   getUserTypes()
   {
     return this.httpClient.get(baseUrl + getUserTypesRoute);
   }
+  getUserServices() {
+    return this.httpClient.get(baseUrl + getUserServicesRoute);
+  }
+  createUser(user) {
+    console.log(user);
+    return this.httpClient.post(baseUrl + signupRoute, JSON.stringify(user), httpOptions);
+  }
+  saveProfilePic(file) {
+    const formData: FormData = new FormData();
+    formData.append('File', file);
+    console.log(formData);
+    return this.httpClient.post(baseUrl + postAttachmentRoute , formData);
+  }
+  //----------------------------------------------------------------------------------------------------------
   getUserDetialsById(id) {
     return this.httpClient.get(baseUrl + getUserRoute + id);
   }
@@ -48,10 +63,7 @@ export class UserService {
     return this.httpClient.get(baseUrl + getUsersRoute + "?username=" + filter + "&PageNo=" + pageNo + "&PageSize=" + pageSize);
   }
 
-  createUser(user) {
-    console.log(user);
-        return this.httpClient.post(baseUrl + signupRoute, JSON.stringify(user), httpOptions);
-    }
+  
 
     login(user) {
     return this.httpClient.post(baseUrl + "Login", JSON.stringify(user), httpOptions)
