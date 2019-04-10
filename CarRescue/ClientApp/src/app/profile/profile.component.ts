@@ -143,16 +143,16 @@ export class ProfileComponent implements OnInit {
 
   saveUserPhoto(file) {
     console.log(this.url)
-    this.profileService.saveProfilePic(this.authService.getLoggedInUserId(), file).subscribe(response => {
-      this.notificationService.createNotificationService('success', 'Uploading Success', 'Profile picture uploaded successfully');
-      this.user.profileImageName = response;
-      console.log(this.user.profileImageName )
-      console.log(this.url)
-    }, error => {
-        this.notificationService.createNotificationService('danger', 'Uploading Error!', 'Error in uploading your profile pic');
+    //this.profileService.saveProfilePic(this.authService.getLoggedInUserId(), file).subscribe(response => {
+    //  this.notificationService.createNotificationService('success', 'Uploading Success', 'Profile picture uploaded successfully');
+    //  this.user.profileImageName = response;
+    //  console.log(this.user.profileImageName )
+    //  console.log(this.url)
+    //}, error => {
+    //    this.notificationService.createNotificationService('danger', 'Uploading Error!', 'Error in uploading your profile pic');
 
 
-    });
+    //});
   }
   
 

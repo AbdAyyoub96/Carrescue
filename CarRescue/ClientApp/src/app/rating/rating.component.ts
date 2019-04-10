@@ -59,7 +59,7 @@ export class RatingComponent {
   
   CreateNewRate() {
     this.ratingForm.setValue({
-      userID: Number(this.auth.getLoggedInUserId()),
+      //userID: Number(this.auth.getLoggedInUserId()),
       rating1: this.ratingValue,
       
       note: this.note.value

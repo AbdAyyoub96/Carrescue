@@ -44,6 +44,16 @@ namespace CarRescue.Controllers
         }
 
         // GET: api/Users/5
+        [HttpGet]
+        [Route("GetUserTypes")]
+        public async Task<ActionResult<User>> GetUserTypes()
+        {
+            var user = await _context.UserType.ToListAsync();
+            
+            return Ok(user);
+        }
+
+        // GET: api/Users/5
         [HttpPost]
         [Route("Login")]
         public async Task<ActionResult<User>> Login(User user)
@@ -92,7 +102,7 @@ namespace CarRescue.Controllers
         // POST: api/Users
         [HttpPost]
         [Route("SignUp")]
-        public async Task<ActionResult<User>> SignUp(User user)
+        public async Task<ActionResult<User>> SignUp([FromBody]User user)
         {
             user.Status = 1; 
 

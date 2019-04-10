@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../services/user.service';
@@ -18,7 +18,7 @@ export interface UserTypes {
     styleUrls: ['./register.component.scss']
 })
 /** register component*/
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
     /** register ctor */
   signUpForm = new FormGroup({
     fullName: new FormControl('', Validators.required),
@@ -27,24 +27,12 @@ export class RegisterComponent {
     username: new FormControl('', [Validators.required,Validators.minLength(6)]),
     MobileNumber: new FormControl('', Validators.required),
     rePass: new FormControl('', Validators.required),
-    userType: new FormControl('', Validators.required)
+    userTypeId: new FormControl('', Validators.required)
 
   }, { validators: this.passValidator })
 
-  types: UserTypes[] = [
-    {
-      value: '1',
-      name:'User'
-    },
-    {
-      value: '2',
-      name: 'Electronic'
-    },
-    {
-      value: '3',
-      name: 'Gas Station'
-    },
-   ];
+  types;
+
   hide = true;
   
   constructor(
@@ -56,12 +44,23 @@ export class RegisterComponent {
     translate.use(localStorage.getItem('lang') !== null || localStorage.getItem('lang') !== null ? localStorage.getItem('lang') : 'en');
 
   }
-
+  ngOnInit()
+  {
+    this.getUserTypes();
+  }
  
-  
+  getUserTypes() {
+    this.userService.getUserTypes().subscribe(response => {
+      this.types = response;
+      console.log(response);
+    }, error => {
+    
+    });
+  }
   get fullName() {   
     return this.signUpForm.get('fullName') as FormControl;
   }
+  
   
   get username() {
     return this.signUpForm.get('username') as FormControl;
@@ -80,8 +79,8 @@ export class RegisterComponent {
     
   }
 
-  get userType() {
-    return this.signUpForm.get('userType') as FormControl;
+  get userTypeId() {
+    return this.signUpForm.get('userTypeId') as FormControl;
   }
   
   get rePass() {
@@ -89,11 +88,7 @@ export class RegisterComponent {
   }
   
   CreateNewUser() {
-    
-    //let MobileNo = this.filterItemsOfType(this.userType.value) + this.MobileNumber.value;
-    
-   // this.signUpForm.controls['MobileNumber'].setValue(MobileNo);
-    
+    console.log(this.signUpForm.value)
     this.userService.createUser(this.signUpForm.value).subscribe(response => {
       
       this.notificationService.createNotificationService('success', 'Signup Success', 'Your account has been created');

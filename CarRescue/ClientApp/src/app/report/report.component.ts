@@ -37,7 +37,7 @@ export class ReportComponent implements OnInit {
   createnewReport() {
 
     this.reportForm.setValue({
-      userId: Number(this.auth.getLoggedInUserId()),
+     // userId: Number(this.auth.getLoggedInUserId()),
 
       note: this.note.value,
       
