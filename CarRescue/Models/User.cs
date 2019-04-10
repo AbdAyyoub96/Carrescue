@@ -25,6 +25,7 @@ namespace CarRescue.Models
         public string Attachment { get; set; }
         public int Status { get; set; }
         public int UserTypeId { get; set; }
+        public int? State { get; set; }
 
         public virtual UserType UserType { get; set; }
         public virtual ICollection<Notification> Notification { get; set; }

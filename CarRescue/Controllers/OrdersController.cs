@@ -32,8 +32,26 @@ namespace CarRescue.Controllers
         public async Task<ActionResult<IEnumerable<Order>>> GetAllOrdersByCategory(int typeId)
         {
             // and status != closed
-            return await _context.Order.Where(x=>x.ServiceTypeId == typeId ).ToListAsync();
+            return await _context.Order.Where(x=>x.ServiceTypeId == typeId).ToListAsync();
         }
+
+
+        [HttpGet]
+        [Route("GetAllOrdersForProvider/{UserId}")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetAllOrdersForProvider(int UserId)
+        {
+            var user = _context.User.Find(UserId);
+
+            var providerOrders = _context.Order
+                                    .Where(x => x.ServiceTypeId == user.UserTypeId
+                                             && x.State == user.State
+                                             && x.Status == (int)Models.Enums.OrderStatus.Pending)
+                                    .Include(x => x.ServiceType)
+                                    .Include(x => x.OrderOffer)
+                                    .ToListAsync();
+            return await providerOrders;
+        }
+
 
         [HttpGet]
         [Route("GetOrder/{id}")]
