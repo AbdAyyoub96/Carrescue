@@ -9,8 +9,6 @@ import { error } from 'util';
 import { User } from '../modelInterfaces';
 
 
-//import { User } from 'app/ModelInterfaces/ModelInterface';
-
 const baseUrl = 'api/Users/'
 const getUserRoute = 'GetUserById/';
 const updateUserRoute = 'UpdateUserInfo';
