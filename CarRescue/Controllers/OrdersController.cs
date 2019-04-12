@@ -26,7 +26,7 @@ namespace CarRescue.Controllers
         [Route("GetAllOrders")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrder()
         {
-            return await _context.Order.ToListAsync();
+            return await _context.Order.OrderByDescending(x => x.Id).ToListAsync();
         }
 
         [HttpGet]
@@ -34,7 +34,7 @@ namespace CarRescue.Controllers
         public async Task<ActionResult<IEnumerable<Order>>> GetAllOrdersByCategory(int typeId)
         {
             // and status != closed
-            return await _context.Order.Where(x=>x.ServiceTypeId == typeId).Include(x=>x.User).ToListAsync();
+            return await _context.Order.OrderByDescending(x => x.Id).Where(x=>x.ServiceTypeId == typeId).ToListAsync();
         }
 
         [HttpGet]
@@ -46,6 +46,7 @@ namespace CarRescue.Controllers
                             .Include(x => x.ServiceType)
                             .Include(x => x.User)
                             .Include(x => x.OrderOffer)
+                            .OrderByDescending(x => x.Id)
                             .ToListAsync();
         }
 
@@ -62,6 +63,7 @@ namespace CarRescue.Controllers
                                     .Include(x => x.ServiceType)
                                     .Include(x => x.User)
                                     .Include(x => x.OrderOffer)
+                                    .OrderByDescending(x => x.Id)
                                     .ToListAsync();
             return await providerOrders;
         }
@@ -75,6 +77,7 @@ namespace CarRescue.Controllers
                                 .Include(x => x.ServiceType)
                                 .Include(x => x.User)
                                 .Include(x => x.OrderOffer)
+
                                 .FirstOrDefaultAsync();
 
             if (order == null)
@@ -100,6 +103,7 @@ namespace CarRescue.Controllers
 
             return order;
         }
+
         [HttpPut]
         [Route("EditOrder/{id}")]
         public async Task<IActionResult> EditOrder(int id, Order order)

@@ -25,5 +25,6 @@ namespace CarRescue.Models.Enums
     {
         Active = 1,
         InActive = 2,
+        Blocked = 3
     }
 }

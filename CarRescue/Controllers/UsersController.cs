@@ -29,7 +29,9 @@ namespace CarRescue.Controllers
         [Route("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-            return await _context.User.ToListAsync();
+            return await _context.User
+                            .Include(x => x.UserType)
+                            .ToListAsync();
         }
 
         // GET: api/Users/5
@@ -37,7 +39,6 @@ namespace CarRescue.Controllers
         [Route("GetUserById/{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-           
             var user = await _context.User.Where(x => x.Id == id)
                                 .Include(x => x.Order)
                                 .Include(x => x.OrderOffer)
@@ -109,11 +110,69 @@ namespace CarRescue.Controllers
         {
             return await _context.UserType.Where(x=>x.Status == (int) UserTypesStatus.Active).ToListAsync();
         }
+        
         [HttpGet]
-        [Route("GetUserServices")]
-        public async Task<ActionResult<IEnumerable<Service>>> GetUserServices()
+        [Route("GetAllApprovals")]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllApprovals()
         {
-            return await _context.Service.ToListAsync();
+            return await _context.User.Where(x => x.Status == (int)UserTypesStatus.InActive)
+                                 .ToListAsync();
+        }
+
+        [HttpGet]
+        [Route("ApproveUser/{UserId}")]
+        private async Task<IActionResult> ActivateUser(int UserId)
+        {
+            var user = _context.User.Find(UserId);
+
+            if (user == null)
+            {
+                return BadRequest("User Not Found!");
+            }
+
+            user.Status = (int)Models.Enums.UserTypesStatus.Active;
+
+      
+
+            try
+            {
+                _context.Entry(user).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                BadRequest("Error!");
+            }
+
+            return Ok(user);
+        }
+
+        [HttpGet]
+        [Route("BlockUser/{UserId}")]
+        private async Task<IActionResult> BlockUser(int UserId)
+        {
+            var user = _context.User.Find(UserId);
+
+            if (user == null)
+            {
+                return BadRequest("User Not Found!");
+            }
+
+            user.Status = (int)Models.Enums.UserTypesStatus.Blocked;
+
+           
+
+            try
+            {
+                _context.Entry(user).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                BadRequest("Error!");
+            }
+
+            return Ok(user);
         }
 
         // PUT: api/Users/5

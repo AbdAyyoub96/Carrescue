@@ -25,7 +25,11 @@ namespace CarRescue.Controllers
         [Route("GetAllReports")]
         public async Task<ActionResult<IEnumerable<Report>>> GetReport()
         {
-            return await _context.Report.ToListAsync();
+            return await _context.Report
+                            .Include(x => x.ReportedUserNavigation)
+                            .Include(x => x.User)
+                            .OrderByDescending(x => x.Id)
+                            .ToListAsync();
         }
 
         // GET: api/Reports/5
@@ -51,6 +55,8 @@ namespace CarRescue.Controllers
             var reports = await _context.Report
                                 .Where(x=>x.ReportedUser == UserId)
                                 .Include(x=>x.ReportedUserNavigation)
+                                .Include(x=>x.User)
+                                .OrderByDescending(x => x.Id)
                                 .ToListAsync();
 
             if (reports == null)
