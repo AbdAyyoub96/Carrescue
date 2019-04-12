@@ -65,8 +65,9 @@ namespace CarRescue.Controllers
         // POST: api/Reports
         [HttpPost]
         [Route("CreateReport")]
-        public async Task<ActionResult<Report>> PostReport([FromBody] Report report)
+        public async Task<ActionResult<Report>> PostReport(int id ,[FromBody] Report report)
         {
+            report.ReportedUser = id;
             try
             {
                 _context.Report.Add(report);

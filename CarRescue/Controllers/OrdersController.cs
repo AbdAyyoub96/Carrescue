@@ -34,7 +34,7 @@ namespace CarRescue.Controllers
         public async Task<ActionResult<IEnumerable<Order>>> GetAllOrdersByCategory(int typeId)
         {
             // and status != closed
-            return await _context.Order.Where(x=>x.ServiceTypeId == typeId).ToListAsync();
+            return await _context.Order.Where(x=>x.ServiceTypeId == typeId).Include(x=>x.User).ToListAsync();
         }
 
         [HttpGet]

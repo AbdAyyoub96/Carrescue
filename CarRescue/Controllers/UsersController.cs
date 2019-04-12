@@ -37,6 +37,7 @@ namespace CarRescue.Controllers
         [Route("GetUserById/{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
+           
             var user = await _context.User.Where(x => x.Id == id)
                                 .Include(x => x.Order)
                                 .Include(x => x.OrderOffer)

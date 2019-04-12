@@ -1,0 +1,91 @@
+
+  
+      <mat-card>
+        <mat-card-header>
+          <h4 class="card-title">{{ 'HOME.SendOffer' | translate }}</h4>
+
+        </mat-card-header>
+
+        <hr />
+        <form [formGroup]="newOfferForm">
+
+          <br />
+
+          <div class="row">
+           
+            <div class="col m-1">
+              <mat-form-field>
+                <input matInput placeholder=" {{ 'HOME.expectedArrivalTime' | translate }}" formControlName="expectedArrivalTime" required>
+
+                <mat-error *ngIf="expectedArrivalTime.hasError('required')">
+                  {{ 'HOME.expectedArrivalTimerequired' | translate }}
+                </mat-error>
+              </mat-form-field>
+
+            </div>
+            <br />
+
+
+            <div class="col m-1">
+              <mat-form-field>
+                <input matInput placeholder=" {{ 'HOME.price' | translate }}" formControlName="price" required>
+
+                <mat-error *ngIf="price.hasError('required')">
+                  {{ 'HOME.priceRequired' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+         
+          <div class="row">
+           
+              <mat-form-field class=" m-1 w-100">
+                <input matInput placeholder="{{ 'HOME.notes' | translate }}" formControlName="notes">
+
+                <mat-error *ngIf="notes.hasError('required')">
+                  {{ 'HOME.notesRequired' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+           
+          <div class="row">
+            
+            <div class="col m-1">
+              <mat-form-field>
+                <input matInput placeholder=" {{ 'HOME.location' | translate }}" formControlName="location" required>
+
+                <mat-error *ngIf="location.hasError('required')">
+                  {{ 'HOME.locationisrequired' | translate }}
+                </mat-error>
+              </mat-form-field>
+
+            </div>
+            <br />
+
+
+            <div class="col m-1">
+              <mat-form-field>
+                <mat-select placeholder="{{ 'HOME.state' | translate }}" [formControl]="state">
+                  <mat-option *ngFor="let state of states" [value]="state.value">
+                    {{state.name}}
+
+                  </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="state.hasError('required')">
+                  {{ 'HOME.stateRequired' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <hr />
+
+          <br />
+        </form>
+        <mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close color="primary">{{ 'HOME.Cancel' | translate }}</button>
+          <button mat-button color="primary" (click)="CreateNewOffer()">{{ 'HOME.submit' | translate }}</button>
+        </mat-dialog-actions>
+
+      </mat-card>
+   

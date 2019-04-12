@@ -53,6 +53,7 @@ export class LoginComponent {
       this.user = response;
       let token = JSON.stringify(this.user);
       localStorage.setItem("user", token);
+      localStorage.setItem("userId", this.user.id);
       console.log(token)
       if (this.user.userTypeId == 1) {
         this.router.navigate(["/new-order/" + this.user.id]);

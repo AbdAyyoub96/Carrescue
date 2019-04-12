@@ -1,6 +1,6 @@
 <body>
   <mat-sidenav-container [dir]="isRtl()" class="example-container" autosize>
-    <mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true" *ngIf="!isLoginOrSignUp()">
+    <!--<mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true" *ngIf="!isLoginOrSignUp()">
       <mat-nav-list>
         <mat-list-item>
           <button mat-icon-button (click)="isExpanded = !isExpanded">
@@ -13,11 +13,11 @@
        
       
       </mat-nav-list>
-    </mat-sidenav>
+    </mat-sidenav>-->
 
     <div class="example-sidenav-content">
       <mat-toolbar color="primary" style="margin-bottom:10px;">
-        <img src="pic1.png" height="70" width="70" />
+        <!--<img src="2.png" height="70" width="70" />-->
         <span class="example-spacer"></span>
         <button mat-icon-button [matMenuTriggerFor]="menuNotify" *ngIf="this.authService.isLoggedin()" >
           <mat-icon [matBadge]="userNotifications?.length" matBadgeColor="warn">notification_important</mat-icon>
@@ -43,6 +43,7 @@
           <button mat-menu-item routerLink="/profile/{{authService.getLoggedInUserId()}}" *ngIf="this.authService.isLoggedin()">
             <span>{{ 'HOME.MyProfile' | translate }}</span>
           </button>
+        
           <button mat-menu-item (click)="this.authService.Logout()" *ngIf="this.authService.isLoggedin()">
             <span>{{ 'HOME.Logout' | translate }}</span>
           </button>

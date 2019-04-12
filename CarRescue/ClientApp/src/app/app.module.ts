@@ -34,6 +34,8 @@ import { ReportComponent } from './report/report.component';
 import { NewOrderComponent } from './new-order/new-order.component';
 import { OrdersComponent } from './orders/orders.component';
 import { OrderService } from './services/order.service';
+import { SendOfferdialogComponent } from './send-offerdialog/send-offerdialog.component';
+import { OrderofferService } from './services/orderoffer.service';
 
 // Configs 
 
@@ -59,7 +61,7 @@ export function tokenGetter() {
     OrdersComponent,
     FilteringComponent,
     CompleteProfileComponent,
-   
+    SendOfferdialogComponent,
     ReportComponent,
    
   ],
@@ -101,7 +103,7 @@ export function tokenGetter() {
       { path: 'rating', component: RatingComponent },
       { path: 'filtering', component: FilteringComponent },
       { path: 'complete-profile', component: CompleteProfileComponent },
-     
+      { path: 'send-offer', component: SendOfferdialogComponent },
       { path: 'report', component: ReportComponent },
      
 
@@ -109,7 +111,7 @@ export function tokenGetter() {
   ],
   providers: [
     InternationalizationService,
-   
+    OrderofferService,
     NotificationService,
     AuthService,
     RatingService,

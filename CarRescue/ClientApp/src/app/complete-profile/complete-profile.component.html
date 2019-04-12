@@ -10,70 +10,35 @@
     <mat-form-field class="m-2">
       <input matInput placeholder="{{ 'HOME.FullName' | translate }}" formControlName="fullName" [value]="user.fullName">
     </mat-form-field>
-
-    <mat-form-field class="m-2">
-      <input matInput [matDatepicker]="picker" placeholder="{{ 'HOME.BirthDate' | translate }}" formControlName="BirthDate" [value]="user.birthDate">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-  </div>
-
-  <div class="row">
-   
-   
-
-  </div>
-  <div class="row">
-    
-    <mat-form-field class="m-2">
-      <mat-select placeholder="{{ 'HOME.country' | translate }}" #country [formControl]="Country" [value]="user.country">
-        <mat-option *ngFor="let countr of countries" [value]="countr.viewValue">{{countr.viewValue}}</mat-option>
-      </mat-select>
-
-    </mat-form-field>
-    <mat-form-field class="m-2">
-      <mat-select placeholder="{{ 'HOME.Gender' | translate }}" [formControl]="Gender" [value]="user.gender">
-        <mat-option *ngFor="let g of Genders" [value]="g">
-          {{g}}
-        </mat-option>
-
-      </mat-select>
-    </mat-form-field>
-
-
-
-  </div>
-  <div class="row">
     <mat-form-field class="m-2 w-100">
-      <span matPrefix>{{filterItemsOfType(country.value)}} &nbsp;</span>
-      <input matInput placeholder="{{ 'HOME.MobileNumber' | translate }}" formControlName="MobileNumber" [value]="user.mobileNumber">
-      <mat-icon matSuffix>phone</mat-icon>
+      <input matInput placeholder="{{ 'HOME.MobileNumber' | translate }}" formControlName="mobileNumber" [value]="user.mobileNumber">
       <mat-error>
         {{ 'HOME.MobileNumberrequired' | translate }}
       </mat-error>
     </mat-form-field>
 
-   
-  </div>
-  <div class="row">
-
-    <mat-form-field class="m-2">
-      <input matInput placeholder="{{ 'HOME.carNo' | translate }}" formControlName="CarNumber" [value]="user.carNo">
-
-      <mat-error>
-        {{ 'HOME.carNorequired' | translate }}
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="m-2">
-      <input matInput placeholder="{{ 'HOME.carInfo' | translate }}" formControlName="CarInfo" [value]="user.carInfo">
-      <mat-error>
-        {{ 'HOME.carInfo' | translate }}
-      </mat-error>
-    </mat-form-field>
 
   </div>
+
+  <div class="row" *ngIf="user.userTypeId!=1">
+    <mat-form-field>
+      <mat-select placeholder="{{ 'HOME.state' | translate }}" [formControl]="state">
+        <mat-option *ngFor="let state of states" [value]="state.value">
+          {{state.name}}
+
+        </mat-option>
+      </mat-select>
+
+      <mat-error *ngIf="state.hasError('required')">
+        {{ 'HOME.stateRequired' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+
+  </div>
+ 
   
+ 
 </div>
   </form>
 <mat-dialog-actions align="end">

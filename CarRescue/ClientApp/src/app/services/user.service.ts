@@ -11,7 +11,7 @@ import { User } from '../modelInterfaces';
 
 const baseUrl = 'api/Users/'
 const getUserRoute = 'GetUserById/';
-const updateUserRoute = 'UpdateUserInfo';
+const updateUserRoute = 'EditUserData/';
 const signupRoute = 'SignUp';
 const signinRoute = 'signin';
 const getUsersRoute = 'GetAllUsers';
@@ -67,9 +67,9 @@ export class UserService {
     return this.httpClient.post(baseUrl + "Login", JSON.stringify(user), httpOptions)
      }
 
-  updateUserInfo(user)
+  updateUserInfo(id,user)
   {
-    console.log(user)
-    return this.httpClient.post(baseUrl + updateUserRoute, JSON.stringify(user), httpOptions);
+    console.log(id)
+    return this.httpClient.put(baseUrl + updateUserRoute + id, JSON.stringify(user), httpOptions);
   }
 }

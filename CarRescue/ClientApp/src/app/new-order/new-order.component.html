@@ -58,13 +58,15 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <mat-form-field >
+              <mat-form-field>
                 <input matInput placeholder="{{ 'HOME.notes' | translate }}" formControlName="notes">
 
                 <mat-error *ngIf="notes.hasError('required')">
                   {{ 'HOME.notesRequired' | translate }}
                 </mat-error>
               </mat-form-field>
+            </div>
+              <br />
               <div class="col-md-4">
                 <mat-form-field>
                   <input matInput placeholder=" {{ 'HOME.locations' | translate }}" formControlName="locations" required>
@@ -74,7 +76,7 @@
                   </mat-error>
                 </mat-form-field>
                 </div>
-              </div>
+             
             </div>
           <br />
 
@@ -103,7 +105,7 @@
 
           </div>
           <br />
-          <div class="row">
+          <div class="row" *ngIf="servicetypes.value!=3">
             <div class="col-md-2"></div>
             <div class="col-md-4">
               <mat-form-field >
@@ -114,23 +116,21 @@
             <br />
 
             <div class="col-md-4">
-              <mat-form-field class="w-75">
+              <mat-form-field>
                 <input matInput placeholder="{{ 'HOME.carModel' | translate }}" formControlName="carModel">
 
               </mat-form-field>
-              <mat-form-field class="w-75">
-                <input matInput placeholder="{{ 'HOME.manuYear' | translate }}" formControlName="manuYear">
-
-              </mat-form-field>
+             
 
             </div>
           </div>
-          <div class="row">
+          <div class="row" *ngIf="servicetypes.value!=3">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <div class="row">          
-               
-              </div>
+              <mat-form-field>
+                <input matInput placeholder="{{ 'HOME.manuYear' | translate }}" formControlName="manuYear">
+
+              </mat-form-field>
             </div>
           </div>
 
@@ -142,7 +142,7 @@
             <div class="col-md-9"></div>
             <div class="col-md-2">
               <button mat-raised-button color="primary"  (click)="CreateNewOrder()">
-                {{ 'HOME.Signup' | translate }}
+                {{ 'HOME.AddOrder' | translate }}
               </button>
             </div>
           </div>

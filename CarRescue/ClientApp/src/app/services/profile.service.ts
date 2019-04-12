@@ -5,7 +5,7 @@ const baseUrl = 'api/Users/'
 const postFileRoute = 'PostFile/';
 
 const reportUrl = 'api/Reports/'
-const newReportRoute = 'InsertNewReport';
+const newReportRoute = 'CreateReport';
 
 const httpOptions = {
   headers: new HttpHeaders({

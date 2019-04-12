@@ -10,8 +10,8 @@ export class AuthService {
   }
 
   getLoggedInUserId() {
-    this.token = localStorage.getItem("user")
-    return this.token.id;
+    this.token = localStorage.getItem("userId")
+    return this.token;
 
   }
 
@@ -33,20 +33,17 @@ export class AuthService {
   }
 
   isLoggedin() {
-    let token = localStorage.getItem("jwt");
+    let token = localStorage.getItem("user");
     if (!token)
       return false;
 
-    let isExpired = this.jwtService.isTokenExpired(token);
-    if (isExpired) {
-      return false;
-    }
+   
 
     return true;
   }
 
   Logout() {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("user");
     this.router.navigate(["login"])
   }
 }
