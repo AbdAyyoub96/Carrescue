@@ -66,17 +66,7 @@ export class RatingComponent {
     });
     console.log(this.ratingForm.value);
     this.dialogRef.close(this.ratingForm.value);
-    //this.ratingService.createRate(this.ratingForm.value).subscribe(response => {
-
-    //  this.notificationService.createNotificationService('success', 'Rating Success', 'Your rate has been sent');
-    //  console.log("success");
-    //  //this.router.navigate(["/"]);
-
-
-    //}, error => {
-    //  console.log("failed");
-    // // this.notificationService.createNotificationService('error', 'Signup Failed', 'Check Your Fields');
-    //});
+   
   }
   
   setradio(st)

@@ -1,0 +1,160 @@
+
+<div class="container">
+  <br /><br /><br /><br />
+  <div class="row align-items-center">
+    <div class="col">
+
+    </div>
+    <div class="col-md-9">
+      <mat-card>
+        <mat-card-header>
+          <h4 class="card-title">{{ 'HOME.AddOrder' | translate }}</h4>
+
+        </mat-card-header>
+
+        <hr />
+        <form [formGroup]="newOrderForm">
+
+          <br />
+
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-select placeholder="{{ 'HOME.service' | translate }}" #servicetypes [formControl]="serviceTypeId">
+                  <mat-option *ngFor="let service of services" [value]="service.id">
+                    {{service.name}}
+
+                  </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="serviceTypeId.hasError('required')">
+                  {{ 'HOME.serviceTypeIdisrequired' | translate }}
+                </mat-error>
+              </mat-form-field>
+
+            </div>
+            <br />
+
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-select placeholder="{{ 'HOME.state' | translate }}" [formControl]="state">
+                  <mat-option *ngFor="let state of states" [value]="state.value">
+                    {{state.name}}
+
+                  </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="state.hasError('required')">
+                  {{ 'HOME.stateRequired' | translate }}
+                </mat-error>
+              </mat-form-field>
+             
+            </div>
+          </div>
+          <br />
+
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="{{ 'HOME.notes' | translate }}" formControlName="notes">
+
+                <mat-error *ngIf="notes.hasError('required')">
+                  {{ 'HOME.notesRequired' | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+              <br />
+              <div class="col-md-4">
+                <mat-form-field>
+                  <input matInput placeholder=" {{ 'HOME.locations' | translate }}" formControlName="locations" required>
+
+                  <mat-error *ngIf="locations.hasError('required')">
+                    {{ 'HOME.locationsisrequired' | translate }}
+                  </mat-error>
+                </mat-form-field>
+                </div>
+             
+            </div>
+          <br />
+
+
+          <div class="row" *ngIf="servicetypes.value==3">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <mat-form-field >
+                <input matInput placeholder="{{ 'HOME.gasType' | translate }}" formControlName="gasType">
+                
+              </mat-form-field>
+            </div>
+
+            <br />
+
+
+
+
+            <div class="col-md-4">
+              <mat-form-field >
+                <input matInput placeholder="{{ 'HOME.gasQuantity' | translate }}" formControlName="gasQuantity">
+
+              </mat-form-field>
+            </div>
+
+
+          </div>
+          <br />
+          <div class="row" *ngIf="servicetypes.value!=3">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <mat-form-field >
+                <input matInput placeholder="{{ 'HOME.carType' | translate }}" formControlName="carType">
+
+              </mat-form-field>
+            </div>
+            <br />
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="{{ 'HOME.carModel' | translate }}" formControlName="carModel">
+
+              </mat-form-field>
+             
+
+            </div>
+          </div>
+          <div class="row" *ngIf="servicetypes.value!=3">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="{{ 'HOME.manuYear' | translate }}" formControlName="manuYear">
+
+              </mat-form-field>
+            </div>
+          </div>
+
+
+
+
+          <hr />
+          <div class="row">
+            <div class="col-md-9"></div>
+            <div class="col-md-2">
+              <button mat-raised-button color="primary"  (click)="CreateNewOrder()">
+                {{ 'HOME.AddOrder' | translate }}
+              </button>
+            </div>
+          </div>
+
+          <br />
+        </form>
+
+      </mat-card>
+    </div>
+    <div class="col">
+
+    </div>
+  </div>
+  <simple-notifications></simple-notifications>
+</div>

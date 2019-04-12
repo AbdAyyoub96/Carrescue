@@ -4,16 +4,16 @@ import { Router } from '@angular/router';
 const tokenSoapLink = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/";
 @Injectable()
 export class AuthService {
-
+  token;
   constructor(private jwtService: JwtHelperService, private router: Router) {
 
   }
 
-  //getLoggedInUserId() {
-  //  let token = localStorage.getItem("jwt")
-  //  return this.jwtService.decodeToken(token)[tokenSoapLink + "sid"]
+  getLoggedInUserId() {
+    this.token = localStorage.getItem("userId")
+    return this.token;
 
-  //}
+  }
 
   getLoggedInUserUsername() {
     let token = localStorage.getItem("jwt")
@@ -33,20 +33,17 @@ export class AuthService {
   }
 
   isLoggedin() {
-    let token = localStorage.getItem("jwt");
+    let token = localStorage.getItem("user");
     if (!token)
       return false;
 
-    let isExpired = this.jwtService.isTokenExpired(token);
-    if (isExpired) {
-      return false;
-    }
+   
 
     return true;
   }
 
   Logout() {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("user");
     this.router.navigate(["login"])
   }
 }

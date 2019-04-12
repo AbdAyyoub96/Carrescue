@@ -63,8 +63,9 @@ namespace CarRescue.Controllers
         // POST: api/Ratings
         [HttpPost]
         [Route("CreateRate")]
-        public async Task<ActionResult<Rating>> PostRating([FromBody] Rating rating)
+        public async Task<ActionResult<Rating>> PostRating(int id,[FromBody] Rating rating)
         {
+            rating.RatedUser = id;
             _context.Rating.Add(rating);
             await _context.SaveChangesAsync();
 

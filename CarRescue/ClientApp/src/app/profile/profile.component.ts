@@ -2,22 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MatTableDataSource } from '@angular/material';
 import { RatingComponent } from '../rating/rating.component';
 import { TranslateService } from '@ngx-translate/core';
-import { InternationalizationService } from '../services/internationalization.service';
 import { CompleteProfileComponent } from '../complete-profile/complete-profile.component';
-import { $ } from 'protractor';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
-
-import { DataSource, ArrayDataSource } from '@angular/cdk/collections';
-import { Observable } from 'rxjs';
-import { User } from '../modelInterfaces';
-import { Response } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RatingService } from '../services/rating.service';
-import { Validators, FormControl, FormGroup} from '@angular/forms';
+import { FormGroup} from '@angular/forms';
 import { NotificationService } from '../services/notification.service';
 import { ProfileService } from '../services/profile.service';
-import { error } from 'util';
 import { ReportComponent } from '../report/report.component';
 @Component({
   selector: 'app-profile',
@@ -109,11 +101,11 @@ export class ProfileComponent implements OnInit {
 
     console.log(user);
     console.log(this.user.id);
-    this.userService.updateUserInfo(user).subscribe(response => {
+    this.userService.updateUserInfo(this.user.id, user).subscribe(response => {
 
       this.notificationService.createNotificationService('success', 'Update Success', 'Your Profile has been Updated Successfully');
       console.log("success");
-
+      
     }, error => {
       console.log("failed");
 
@@ -127,33 +119,9 @@ export class ProfileComponent implements OnInit {
     this.CompleteDialogRef.afterClosed().subscribe(data => this.editProfileInfo(data));
 
   }
-  readUrl(event: any) {
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
+  
 
-      reader.onload = (event: ProgressEvent) => {
-        this.url = (<FileReader>event.target).result.toString();
-        
-      }
-      this.saveUserPhoto(event.target.files[0]);
-
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  }
-
-  saveUserPhoto(file) {
-    console.log(this.url)
-    this.profileService.saveProfilePic(this.authService.getLoggedInUserId(), file).subscribe(response => {
-      this.notificationService.createNotificationService('success', 'Uploading Success', 'Profile picture uploaded successfully');
-      this.user.profileImageName = response;
-      console.log(this.user.profileImageName )
-      console.log(this.url)
-    }, error => {
-        this.notificationService.createNotificationService('danger', 'Uploading Error!', 'Error in uploading your profile pic');
-
-
-    });
-  }
+  
   
 
 }

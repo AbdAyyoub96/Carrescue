@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Rating } from '../modelInterfaces';
 const baseUrl = 'api/Ratings/'
-const createRate = 'InsertNewRate/';
+const createRate = 'CreateRate/';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
@@ -17,6 +17,6 @@ export class RatingService {
 
   createRate(rate, ratedUser) {
     console.log(ratedUser);
-    return this.http.post(baseUrl + createRate + "?ratedUser=" + ratedUser, JSON.stringify(rate), httpOptions);
+    return this.http.post(baseUrl + createRate + "?id=" + ratedUser, JSON.stringify(rate), httpOptions);
   }
 }

@@ -13,6 +13,13 @@ namespace CarRescue.Models.Enums
         Gas = 4
 
     }
+    public enum UserServices
+    {        
+        Mechanic = 1,
+        Electrician = 2,
+        Gas = 3
+
+    }
 
     public enum UserTypesStatus
     {

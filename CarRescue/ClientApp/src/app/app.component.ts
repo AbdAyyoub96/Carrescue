@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
     private langService: InternationalizationService, private notificationService: NotificationService) {
 
     this.langService.getLanguage()
-    //this.authService.checkLogin();
+    this.authService.checkLogin();
   }
   
   isLoginOrSignUp() {

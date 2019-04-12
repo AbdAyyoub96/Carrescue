@@ -3,31 +3,17 @@
 
 <div class="row">
 
-
-
-
-
   <div class="col">
     <mat-card class="text-center">
-      <mat-card-header>
-        <div class="avatar-upload">
-          <div class="avatar-edit">
-            <input type='file' id="imageUpload" (change)=readUrl($event) accept=".png, .jpg, .jpeg" />
-            <label for="imageUpload" *ngIf="user.id ==authService.getLoggedInUserId()"></label>
-          </div>
-          <div class="avatar-preview">
-            <img class="imgpreview" [src]="user.profileImageName ? 'ProfilePictures/' + user.id + '/' + user.profileImageName : this.url " />
-          </div>
+      <mat-card-header class="text-center">
+        <h4 class="card-category text-gray text-center row">{{user.username}}</h4><br />
 
 
-        </div>
 
       </mat-card-header>
-      <h4 class="card-category text-gray">{{user.username}}</h4>
 
-      <h6 class="card-title">{{user.country}}</h6>
+      <h5 class="card-title text-center row" *ngIf="user?.useType!=1">{{user.state}}</h5>
 
-     
 
 
       <div class="row text-center">
@@ -37,12 +23,12 @@
           <button mat-raised-button color="primary" (click)="openReportDialog()">{{ 'HOME.report' | translate }}</button>
 
         </div>
-         
+
         <div class="col" *ngIf="user.id ==authService.getLoggedInUserId()">
           <button mat-raised-button color="primary" (click)="openCompleteDialog()">{{ 'HOME.editprofileinfo' | translate }}</button>
           <div class="m-2"></div>
         </div>
-        </div>
+      </div>
     </mat-card>
   </div>
   <div class="col">
@@ -59,24 +45,10 @@
             </mat-list-item>
 
             <mat-divider></mat-divider>
+           
             <mat-list-item>
-              <div *ngIf="user.gender !== null">
-                <div *ngIf="user.gender==true ;else female">
-                  <i class="material-icons">wc</i>
-                  <b>{{ 'HOME.Gender' | translate }} </b>Male
-                  </div>
-                  <ng-template #female>
-
-                    <i class="material-icons">wc</i>
-                    <b>{{ 'HOME.Gender' | translate }} </b>Female
-
-                  </ng-template>
-              </div>
-            </mat-list-item>
-            <mat-divider></mat-divider>
-            <mat-list-item>
-              <div *ngIf="user.country !== null">
-                <i class="material-icons">language</i><b>{{ 'HOME.country' | translate }} </b>{{user.country}}
+              <div *ngIf="user.state !== null">
+                <i class="material-icons">language</i><b>{{ 'HOME.state' | translate }} </b>{{user.state}}
               </div>
             </mat-list-item>
             <mat-divider></mat-divider>
@@ -97,64 +69,65 @@
                 <i class="material-icons">phone_iphone</i><b>{{ 'HOME.MobileNumber' | translate }} </b> {{ user.mobileNumber }}
               </div>
             </mat-list-item>
-            <mat-divider></mat-divider>
-            <mat-list-item>
-              <div *ngIf="user.birthDate !== null">
-                <i class="material-icons">date_range</i><b>{{ 'HOME.BirthDate' | translate }} </b>{{ user.birthDate | date }}
-              </div>
-            </mat-list-item>
+           
           </mat-list>
         </mat-tab>
-        <mat-tab label="{{ 'HOME.TripsLabel' | translate }}">
+        <mat-tab label="{{ 'HOME.orderLabel' | translate }}" *ngIf="user.userTypeId==1 &&user.id ==authService.getLoggedInUserId()">
   
             <table class="table">
               <thead>
                 <tr>
-                  <th>{{ 'HOME.details' | translate }} </th>
-                  <th>{{ 'HOME.fromDest' | translate }} </th>
-                  <th>{{ 'HOME.toDest' | translate }} </th>
-                  <th>{{ 'HOME.StartTime' | translate }} </th>
+                  <th>{{ 'HOME.details' | translate }}</th>
+                  <th>{{ 'HOME.createdDate' | translate }} </th>
+                  <th>{{ 'HOME.serviceType' | translate }} </th>
                   <th>{{ 'HOME.Status' | translate }} </th>
-                  <th>{{ 'HOME.isArrived' | translate }} </th>
+                  <th>{{ 'HOME.notes' | translate }} </th>
 
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let T of user.trip">
-                  <td><a [routerLink]="['/trip-details',T.id ]">{{T.id}}</a></td>
-                  <td>{{T.fromDestination}}</td>
-                  <td>{{T.toDestination}}</td>
-                  <td>{{T.startTime | date}}</td>
-                  <td *ngIf="T.status==1">{{ 'HOME.Opened' | translate }}</td>
-                  <td *ngIf="T.status==2">{{ 'HOME.Closed' | translate }}</td>
-                  <td *ngIf="T.status==3">{{ 'HOME.FullBoard' | translate }}</td>
-                  <td *ngIf="T.status==4">{{ 'HOME.Deleted' | translate }}</td>
-                  <td *ngIf="T.isArrived == true;else no">{{ 'HOME.yes' | translate }}</td>
-                  <ng-template #no><td>{{ 'HOME.no' | translate }}</td></ng-template>
+                <tr *ngFor="let order of user.order">
+                  <td><a [routerLink]="['/order-details',order.id ]">{{order.id}}</a></td>
+                  <td>{{order.createdDate}}</td>
+                  <td *ngIf="order.serviceTypeId==1">{{ 'HOME.Mechanic' | translate }}</td>
+                  <td *ngIf="order.serviceTypeId==2">{{ 'HOME.Elictrician' | translate }}</td>
+                  <td *ngIf="order.serviceTypeId==3">{{ 'HOME.Gas' | translate }}</td>
+                  <td *ngIf="order.status==1">{{ 'HOME.Pending' | translate }}</td>
+                  <td *ngIf="order.status==2">{{ 'HOME.Served' | translate }}</td>
+                  <td *ngIf="order.status==4">{{ 'HOME.Cancelled' | translate }}</td>
+                  <td>{{order.notes}}</td>
                 </tr>
               </tbody>
             </table>
 
 
 </mat-tab>
-        <mat-tab label="{{ 'HOME.Requests' | translate }}" *ngIf="user.id ==authService.getLoggedInUserId()">
+        <mat-tab label="{{ 'HOME.offers' | translate }}" *ngIf="user.id ==authService.getLoggedInUserId()">
           <table class="table">
             <thead>
               <tr>
-                <th>{{ 'HOME.RequestDate' | translate }} </th>
-                <th>{{ 'HOME.PassengerNote' | translate }} </th>
+                <th>{{ 'HOME.orderId' | translate }} </th>
+                <th>{{ 'HOME.ProviderId' | translate }} </th>
                 <th>{{ 'HOME.Status' | translate }} </th>
-                <th>{{ 'HOME.PaymentMethod' | translate }} </th>                
+                <th>{{ 'HOME.ProviderLocation' | translate }} </th>
+                <th>{{ 'HOME.ExpectedArrivalTime' | translate }} </th>
+                <th>{{ 'HOME.price' | translate }} </th>
+                <th>{{ 'HOME.notes' | translate }} </th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let R of user.tripRequest">
-                <td>{{ R.requestDate }}</td>
-                <td>{{ R.passengerNote }}</td>
-                <td *ngIf="R.status==1">{{ 'HOME.New' | translate }}</td>
-                <td *ngIf="R.status==2">{{ 'HOME.Approved' | translate }}</td>
-                <td *ngIf="R.status==3">{{ 'HOME.Reject' | translate }}</td>
-                <td>{{ R.paymentMethod }}</td>
+              <tr *ngFor="let offer of user.orderOffer">
+                <td><a [routerLink]="['/order-details',offer.orderId ]">{{offer.orderId}}</a></td>
+                <td><a [routerLink]="['/profile',offer.userId ]">{{offer.userId}}</a></td>
+                <td *ngIf="offer.status==1">{{ 'HOME.Pending' | translate }}</td>
+                <td *ngIf="offer.status==2">{{ 'HOME.Approved' | translate }}</td>
+                <td *ngIf="offer.status==3">{{ 'HOME.Rejected' | translate }}</td>
+                <td *ngIf="offer.status==4">{{ 'HOME.Cancelled' | translate }}</td>
+
+                <td>{{ offer.location }}</td>
+                <td>{{ offer.expectedArrivalTime }}</td>
+                <td>{{ offer.price }}</td>
+                <td>{{ offer.notes }}</td>
               </tr>
             </tbody>
           </table>
@@ -172,7 +145,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let R of user.ratingRatedUserNavigation">
-                  <th scope="row"><a [routerLink]="['/profile',R.user.id ]">{{R.user.username}}</a></th>
+                  <th scope="row">{{R.userId}}</th>
                   <td> {{ R.rating1 }}<i class="material-icons">star_rate</i></td>
                   <td>{{ R.note }}</td>
    

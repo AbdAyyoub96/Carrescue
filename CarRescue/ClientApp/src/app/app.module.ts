@@ -31,6 +31,11 @@ import { RatingService } from './services/rating.service';
 import { TripRequestService } from './services/trip-request.service';
 import { AdminService } from './services/admin.service';
 import { ReportComponent } from './report/report.component';
+import { NewOrderComponent } from './new-order/new-order.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrderService } from './services/order.service';
+import { SendOfferdialogComponent } from './send-offerdialog/send-offerdialog.component';
+import { OrderofferService } from './services/orderoffer.service';
 
 // Configs 
 
@@ -50,13 +55,13 @@ export function tokenGetter() {
     AdminComponent,
     LoginComponent,
     RegisterComponent,
-  
+    NewOrderComponent,
     ProfileComponent,
     RatingComponent,
-   
+    OrdersComponent,
     FilteringComponent,
     CompleteProfileComponent,
-   
+    SendOfferdialogComponent,
     ReportComponent,
    
   ],
@@ -92,12 +97,13 @@ export function tokenGetter() {
       { path: 'login', component: LoginComponent },
       { path: 'admin', component: AdminComponent },
       { path: 'register', component: RegisterComponent },
-      
+      { path: 'new-order/:id', component: NewOrderComponent },
+      { path: 'orders/:id', component: OrdersComponent },  
       { path: 'profile/:id', component: ProfileComponent },
       { path: 'rating', component: RatingComponent },
       { path: 'filtering', component: FilteringComponent },
       { path: 'complete-profile', component: CompleteProfileComponent },
-     
+      { path: 'send-offer', component: SendOfferdialogComponent },
       { path: 'report', component: ReportComponent },
      
 
@@ -105,13 +111,14 @@ export function tokenGetter() {
   ],
   providers: [
     InternationalizationService,
-   
+    OrderofferService,
     NotificationService,
     AuthService,
     RatingService,
     UserService,
     TripRequestService,
-    AdminService
+    AdminService,
+    OrderService
   ],
   bootstrap: [AppComponent]
 })
