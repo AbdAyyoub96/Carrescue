@@ -29,7 +29,9 @@ namespace CarRescue.Controllers
         [Route("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-            return await _context.User.ToListAsync();
+            return await _context.User
+                            .Include(x => x.UserType)
+                            .ToListAsync();
         }
 
         // GET: api/Users/5
@@ -107,6 +109,70 @@ namespace CarRescue.Controllers
         public async Task<ActionResult<IEnumerable<UserType>>> GetUserTypes()
         {
             return await _context.UserType.Where(x=>x.Status == (int) UserTypesStatus.Active).ToListAsync();
+        }
+        
+        [HttpGet]
+        [Route("GetAllApprovals")]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllApprovals()
+        {
+            return await _context.User.Where(x => x.Status == (int)UserTypesStatus.InActive)
+                                 .ToListAsync();
+        }
+
+        [HttpGet]
+        [Route("ApproveUser/{UserId}")]
+        private async Task<IActionResult> ActivateUser(int UserId)
+        {
+            var user = _context.User.Find(UserId);
+
+            if (user == null)
+            {
+                return BadRequest("User Not Found!");
+            }
+
+            user.Status = (int)Models.Enums.UserTypesStatus.Active;
+
+      
+
+            try
+            {
+                _context.Entry(user).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                BadRequest("Error!");
+            }
+
+            return Ok(user);
+        }
+
+        [HttpGet]
+        [Route("BlockUser/{UserId}")]
+        private async Task<IActionResult> BlockUser(int UserId)
+        {
+            var user = _context.User.Find(UserId);
+
+            if (user == null)
+            {
+                return BadRequest("User Not Found!");
+            }
+
+            user.Status = (int)Models.Enums.UserTypesStatus.Blocked;
+
+           
+
+            try
+            {
+                _context.Entry(user).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                BadRequest("Error!");
+            }
+
+            return Ok(user);
         }
 
         // PUT: api/Users/5

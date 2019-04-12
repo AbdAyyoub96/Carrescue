@@ -10,17 +10,17 @@ namespace CarRescue.Controllers
     public class NotificationProvider
     {
         private readonly CarRescueContext _context;
+
         private NotificationTemplates templates = new NotificationTemplates();
 
-        public NotificationProvider(CarRescueContext context)
+        public NotificationProvider( )
         {
-            _context = context;
+            _context = new CarRescueContext();
         }
 
-        public void CreateNewNotification(int userId ,int notifiedUserId ,int orderId, string template , string link)
+        public void CreateNewNotification(int userId ,int notifiedUserId , string template , string link)
         {
             var user = _context.User.FirstOrDefault(x => x.Id == userId);
-            var order = _context.Order.FirstOrDefault(x => x.Id == orderId);
 
             template = template.Replace("{Username}", user.Username);
 

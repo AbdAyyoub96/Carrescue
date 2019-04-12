@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarRescue.Models;
+using CarRescue.Models.Templates;
 
 namespace CarRescue.Controllers
 {
@@ -15,6 +16,7 @@ namespace CarRescue.Controllers
     {
         private readonly CarRescueContext _context;
         private OrderProcesses orderProcesses = new OrderProcesses();
+        private NotificationProvider notificationProvider = new NotificationProvider();
         public OrderOffersController(CarRescueContext context)
         {
             _context = context;
@@ -30,9 +32,10 @@ namespace CarRescue.Controllers
 
         [HttpGet]
         [Route("ChangeOfferStatus/{id}/{status}")]
-        public ActionResult ChangeOfferStatus(int id , int status)
+        public async  Task<ActionResult> ChangeOfferStatus(int id , int status)
         {
             var offer = _context.OrderOffer.Find(id);
+            var order = _context.Order.Find(offer.OrderId);
 
             if(offer == null)
             {
@@ -43,11 +46,18 @@ namespace CarRescue.Controllers
             try
             {
                 _context.Entry(offer).State = EntityState.Modified;
-                _context.SaveChanges();
-
-                if (offer.Status == (int)Models.Enums.OfferStatus.Accepted)
+                await _context.SaveChangesAsync();
+            
+                switch (offer.Status)
                 {
-                    orderProcesses.CloseOrder(offer.OrderId , (int)Models.Enums.OrderStatus.Served);
+                    case (int)Models.Enums.OfferStatus.Accepted: 
+                            notificationProvider.CreateNewNotification(order.UserId, offer.UserId,  NotificationTemplates.AcceptOffer, "");
+                            orderProcesses.CloseOrder(offer.OrderId , (int)Models.Enums.OrderStatus.Served);
+                         break;
+
+                    case (int)Models.Enums.OfferStatus.Rejected:
+                        notificationProvider.CreateNewNotification(order.UserId, offer.UserId, NotificationTemplates.RejectOffer, "");
+                        break;
                 }
 
             }
@@ -120,12 +130,15 @@ namespace CarRescue.Controllers
         [Route("CreateOffer")]
         public async Task<ActionResult<OrderOffer>> PostOrderOffer([FromBody] OrderOffer orderOffer)
         {
+            var order = _context.Order.Find(orderOffer.OrderId);
             orderOffer.Status = (int) Models.Enums.OfferStatus.Pending; // Pending
 
             try
             {
                 _context.OrderOffer.Add(orderOffer);
+                
                 await _context.SaveChangesAsync();
+                notificationProvider.CreateNewNotification(orderOffer.UserId, order.UserId, NotificationTemplates.CreateNewOffer, "");
             }
             catch (Exception e)
             {

@@ -25,7 +25,10 @@ namespace CarRescue.Controllers
         [Route("GetAllRating")]
         public async Task<ActionResult<IEnumerable<Rating>>> GetRating()
         {
-            return await _context.Rating.ToListAsync();
+            return await _context.Rating
+                            .Include(x => x.RatedUserNavigation)
+                            .Include(x => x.User)
+                            .ToListAsync();
         }
 
 
@@ -34,8 +37,10 @@ namespace CarRescue.Controllers
         [Route("GetRatingOfUser/{UserId}")]
         public async Task<ActionResult<IEnumerable<Rating>>> GetRatingOfUser(int UserId)
         {
-            return await _context.Rating.Where(x => x.RatedUser == UserId)
+            return await _context.Rating.Where(x => x.UserId == UserId)
                                 .Include(x=>x.RatedUserNavigation)
+                                .Include(x=>x.User)
+                                .OrderByDescending(x => x.Id)
                                 .ToListAsync();
         }
 
