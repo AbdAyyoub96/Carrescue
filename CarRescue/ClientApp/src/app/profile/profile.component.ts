@@ -11,6 +11,11 @@ import { FormGroup} from '@angular/forms';
 import { NotificationService } from '../services/notification.service';
 import { ProfileService } from '../services/profile.service';
 import { ReportComponent } from '../report/report.component';
+export interface States {
+  name: string;
+  value: number;
+
+}
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -20,7 +25,15 @@ import { ReportComponent } from '../report/report.component';
 
 /** profile component*/
 export class ProfileComponent implements OnInit {
- 
+
+  states: States[] = [
+    { name: 'Amman', value: 1 }, { name: 'Zarqa', value: 2 },
+    { name: 'Irbid', value: 3 }, { name: 'Jerash', value: 4 },
+    { name: 'Ajloun', value: 5 }, { name: 'Mafraq', value: 6 },
+    { name: 'Madaba', value: 7 }, { name: 'Salt', value: 8 },
+    { name: 'Al-karak', value: 9 }, { name: 'Tafila', value: 10 },
+    { name: 'Maan', value: 11 }, { name: 'Aqaba', value: 12 }
+  ];
   displayedColumns = ['fullName', 'username', 'email', 'password'];  
   url = "https://cdn2.iconfinder.com/data/icons/business-management-52/96/Artboard_20-512.png";
   user = {} as any;
@@ -120,7 +133,13 @@ export class ProfileComponent implements OnInit {
 
   }
   
-
+  userState(stateNumber,userType)
+  {
+    if (userType != 1) {
+      let statename = this.states.find(x => x.value == stateNumber);
+      return statename.name;
+    }
+  }
   
   
 

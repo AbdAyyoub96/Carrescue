@@ -12,7 +12,7 @@
 
       </mat-card-header>
 
-      <h5 class="card-title text-center row" *ngIf="user?.useType!=1">{{user.state}}</h5>
+      <h5 class="card-title text-center row" *ngIf="user?.useType!=1">{{userState(user.state,user.userTypeId)}}</h5>
 
 
 
@@ -48,7 +48,7 @@
            
             <mat-list-item>
               <div *ngIf="user.state !== null">
-                <i class="material-icons">language</i><b>{{ 'HOME.state' | translate }} </b>{{user.state}}
+                <i class="material-icons">language</i><b>{{ 'HOME.state' | translate }} </b>{{userState(user.state)}}
               </div>
             </mat-list-item>
             <mat-divider></mat-divider>
@@ -87,7 +87,8 @@
               </thead>
               <tbody>
                 <tr *ngFor="let order of user.order">
-                  <td><a [routerLink]="['/order-details',order.id ]">{{order.id}}</a></td>
+                  <td *ngIf="order.status==1"><a [routerLink]="['/order-details',order.id ]">{{order.id}}</a></td>
+                  <td *ngIf="order.status!=1">{{order.id}}</td>
                   <td>{{order.createdDate}}</td>
                   <td *ngIf="order.serviceTypeId==1">{{ 'HOME.Mechanic' | translate }}</td>
                   <td *ngIf="order.serviceTypeId==2">{{ 'HOME.Elictrician' | translate }}</td>

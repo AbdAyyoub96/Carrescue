@@ -45,11 +45,11 @@ export class AdminComponent {
       this.authService.checkLogin();
   }
   ngOnInit() {
-    this.getAlltrips({}, 1, 5);
+    //this.getAlltrips({}, 1, 5);
     
-    this.getAllUsers(this.filter.value, 1, 5);
-    this.getAllreports(1, 5);
-    this.getAllAds();
+    //this.getAllUsers(this.filter.value, 1, 5);
+    //this.getAllreports(1, 5);
+    //this.getAllAds();
   }
   
 

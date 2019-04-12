@@ -4,9 +4,9 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 const baseUrl = 'api/Orders/';
 const PostOrderRoute = 'PostOrder';
-const getOrderByIdRoute = 'GetAllOrdersByCategory/';
-const createNewTripRoute = 'CreateNewTrip';
-const deleteTaskAssigneeRoute = 'DeleteTaskAssignee/'
+const getOrderByCatRoute = 'GetAllOrdersByCategory/';
+const getOrderByIdRoute = 'GetOrder/';
+const cancelOrderRoute = 'CancelOrder/'
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,6 +21,12 @@ export class OrderService {
     return this.httpClient.post(baseUrl + PostOrderRoute, JSON.stringify(order), httpOptions);
   }
   GetAllOrders(id) {
-    return this.httpClient.get(baseUrl + getOrderByIdRoute+id);
+    return this.httpClient.get(baseUrl + getOrderByCatRoute+id);
+  }
+  GetOrdersById(id) {
+    return this.httpClient.get(baseUrl + getOrderByIdRoute + id);
+  }
+  cancelOrder(id) {
+    return this.httpClient.get(baseUrl + cancelOrderRoute + id);
   }
 }

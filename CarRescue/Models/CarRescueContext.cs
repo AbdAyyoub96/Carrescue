@@ -30,7 +30,7 @@ namespace CarRescue.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("data source=IT-Taha;initial catalog=CarRescue;Trusted_Connection=True;MultipleActiveResultSets=True;App=EntityFramework&quot;");
+                optionsBuilder.UseSqlServer("data source=DESKTOP-H7RM74D;initial catalog=CarRescue;Trusted_Connection=True;MultipleActiveResultSets=True;App=EntityFramework&quot;");
             }
         }
 

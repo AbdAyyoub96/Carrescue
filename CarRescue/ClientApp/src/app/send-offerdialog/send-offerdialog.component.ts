@@ -38,7 +38,7 @@ export class SendOfferdialogComponent implements OnInit {
     state: new FormControl('', Validators.required),
 
   })
-  constructor(public translate: TranslateService, @Inject(MAT_DIALOG_DATA) public data: any,  
+  constructor(public translate: TranslateService, @Inject(MAT_DIALOG_DATA) public data,  
     private router: ActivatedRoute,
     private auth: AuthService,
     private userService: UserService,
@@ -48,6 +48,7 @@ export class SendOfferdialogComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.data)
+    console.log(this.data.orderId)
   }
   get location() {
     return this.newOfferForm.get('location') as FormControl;
@@ -66,7 +67,7 @@ export class SendOfferdialogComponent implements OnInit {
   }
   CreateNewOffer() {
     this.newOfferForm.controls["orderId"].setValue(this.data.orderId);
-    this.newOfferForm.controls["userId"].setValue(this.data.userId);
+    this.newOfferForm.controls["userId"].setValue(Number(this.data.userId));
 
     console.log(this.newOfferForm.value);
     this.dialogRef.close(this.newOfferForm.value);

@@ -3,7 +3,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 const baseUrl = 'api/OrderOffers/';
 const PostOfferRoute = 'CreateOffer';
-const getOrderByIdRoute = 'GetAllOrdersByCategory/';
+const changeOfferStatusRoute = 'ChangeOfferStatus/';
 const createNewTripRoute = 'CreateNewTrip';
 const deleteTaskAssigneeRoute = 'DeleteTaskAssignee/'
 
@@ -19,5 +19,9 @@ export class OrderofferService {
   createOffer(offer)
   {
     return this.httpClient.post(baseUrl + PostOfferRoute, JSON.stringify(offer), httpOptions);
+  }
+  changeOfferStatus(id, status)
+  {
+    return this.httpClient.get(baseUrl + changeOfferStatusRoute + id + '/' + status);
   }
 }
