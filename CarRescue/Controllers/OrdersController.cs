@@ -52,11 +52,16 @@ namespace CarRescue.Controllers
 
         [HttpGet]
         [Route("GetAllOrdersForProvider/{UserId}")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetAllOrdersForProvider(int UserId)
+        public async Task<IActionResult> GetAllOrdersForProvider(int UserId  ,int PageNo = 1, int PageSize = 10)
         {
             var user = _context.User.Find(UserId);
 
-            var providerOrders = _context.Order
+            int totalItems = _context.Order.Where(x => x.ServiceTypeId == user.UserTypeId
+                                           && x.State == user.State
+                                           && x.Status == (int)Models.Enums.OrderStatus.Pending)
+                                           .Count();
+
+            var providerOrders = await _context.Order
                                     .Where(x => x.ServiceTypeId == user.UserTypeId
                                              && x.State == user.State
                                              && x.Status == (int)Models.Enums.OrderStatus.Pending)
@@ -64,8 +69,17 @@ namespace CarRescue.Controllers
                                     .Include(x => x.User)
                                     .Include(x => x.OrderOffer)
                                     .OrderByDescending(x => x.Id)
+                                    .Skip((PageNo - 1) * PageSize)
+                                    .Take(PageSize)
                                     .ToListAsync();
-            return await providerOrders;
+            var obj = new
+            {
+                orders = providerOrders,
+                totalOrders = totalItems
+            };
+
+            return Ok(obj);
+           
         }
 
 

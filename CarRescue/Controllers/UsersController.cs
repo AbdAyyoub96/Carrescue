@@ -39,6 +39,7 @@ namespace CarRescue.Controllers
         [Route("GetUserById/{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
+           
             var user = await _context.User.Where(x => x.Id == id)
                                 .Include(x => x.Order)
                                 .Include(x => x.OrderOffer)
@@ -59,7 +60,7 @@ namespace CarRescue.Controllers
         [Route("Login")]
         public async Task<ActionResult<User>> Login([FromBody] User user)
         {
-            var userInDb = await _context.User.FirstOrDefaultAsync( x=>x.Username == user.Username && x.Password == user.Password );
+            var userInDb = await _context.User.FirstOrDefaultAsync( x => x.Username == user.Username && x.Password == user.Password );
 
             if (userInDb == null)
             {
@@ -98,7 +99,7 @@ namespace CarRescue.Controllers
 
             object fileObj = new
             {
-                FileName = File.FileName
+               attachmentPath =  "/uploads/UserAttachments/" + DateTime.Now.ToString("dd MMMM yyyy") + "/" + File.FileName
             };
 
             return Ok(fileObj);
@@ -160,7 +161,7 @@ namespace CarRescue.Controllers
 
             user.Status = (int)Models.Enums.UserTypesStatus.Blocked;
 
-           
+
 
             try
             {
@@ -173,6 +174,13 @@ namespace CarRescue.Controllers
             }
 
             return Ok(user);
+        }
+
+        [HttpGet]
+        [Route("GetUserServices")]
+        public async Task<ActionResult<IEnumerable<Service>>> GetUserServices()
+        {
+            return await _context.Service.ToListAsync();
         }
 
         // PUT: api/Users/5
