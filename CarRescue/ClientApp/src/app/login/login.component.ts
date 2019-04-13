@@ -51,22 +51,27 @@ export class LoginComponent {
   login() {
     this.userService.login(this.loginForm.value).subscribe(response => {
       this.user = response;
-      let token = JSON.stringify(this.user);
-      localStorage.setItem("user", token);
-      localStorage.setItem("userId", this.user.id);
-      localStorage.setItem("userType", this.user.userTypeId);
-      console.log(token)
-      if (this.user.userTypeId == 1) {
-        this.router.navigate(["/new-order/" + this.user.id]);
+      if (this.user.status != 3) {
+        let token = JSON.stringify(this.user);
+        localStorage.setItem("user", token);
+        localStorage.setItem("userId", this.user.id);
+        localStorage.setItem("userType", this.user.userTypeId);
+        console.log(token)
+        if (this.user.userTypeId == 1) {
+          this.router.navigate(["/new-order/" + this.user.id]);
+        }
+        else if (this.user.userTypeId == 6) {
+          this.router.navigate(["/admin"]);
+        }
+        else { this.router.navigate(["/orders/" + this.user.id]); }
       }
-      else
-      {
-        this.router.navigate(["/orders/" + this.user.id]);
+      else {
+        this.notificationService.createNotificationService('error', 'Login Failed', 'Your Acoount has been blocked');
       }
-    }, error => {
+      }, error => {
         this.notificationService.createNotificationService('error', 'Login Failed', 'Username or password is wrong');
-    });
+      });
 
-   
+  
   }
 }

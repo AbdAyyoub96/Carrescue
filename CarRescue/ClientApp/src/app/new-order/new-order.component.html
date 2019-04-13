@@ -108,19 +108,28 @@
           <div class="row" *ngIf="servicetypes.value==3||servicetypes.value==2">
             <div class="col-md-2"></div>
             <div class="col-md-4">
-              <mat-form-field >
-                <input matInput placeholder="{{ 'HOME.carType' | translate }}" formControlName="carType">
+              <mat-form-field>
+                <mat-select placeholder="{{ 'HOME.carModel' | translate }}" #model (selectionChange)="filterTypes()" [formControl]="carModel">
+                  <mat-option *ngFor="let car of carModels" [value]="car.value">
+                    {{car.name}}
 
+                  </mat-option>
+                </mat-select>
               </mat-form-field>
             </div>
             <br />
 
             <div class="col-md-4">
-              <mat-form-field>
-                <input matInput placeholder="{{ 'HOME.carModel' | translate }}" formControlName="carModel">
-
-              </mat-form-field>
              
+              <mat-form-field>
+                <mat-select placeholder="{{ 'HOME.carType' | translate }}"  [formControl]="carType">
+                  <mat-option *ngFor="let car of types" [value]="car.value">
+                    
+                    {{car.name}}
+
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
             </div>
           </div>

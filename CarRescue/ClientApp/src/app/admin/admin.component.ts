@@ -39,7 +39,7 @@ export class AdminComponent {
     { name: 'Maan', value: 11 }, { name: 'Aqaba', value: 12 }
   ];
   userState(stateNumber, userType) {
-    if (userType != 1) {
+    if (userType != 1 && stateNumber != null) {
       let statename = this.states.find(x => x.value == stateNumber);
       return statename.name;
     }

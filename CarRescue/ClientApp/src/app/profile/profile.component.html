@@ -17,8 +17,8 @@
 
 
       <div class="row text-center">
-        <h4 class="card-category text-gray text-center">{{user.username}}</h4><br />
-        <h5 class="card-title text-center row" *ngIf="user?.useType!=1">{{userState(user.state,user.userTypeId)}}</h5>
+        <h4 class="card-category text-gray text-center col">{{user.username}}</h4><br />
+        <h5 class="card-title text-center col" *ngIf="user?.useType!=1">{{userState(user.state,user.userTypeId)}}</h5>
         <div class="col" *ngIf="user.id !=authService.getLoggedInUserId()">
 
           <button mat-raised-button color="primary" (click)="openRatingDialog()">{{ 'HOME.rateButton' | translate }}</button>

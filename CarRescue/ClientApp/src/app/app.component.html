@@ -6,10 +6,10 @@
       <mat-toolbar color="primary" style="margin-bottom:10px;">
         <!--<img src="2.png" height="70" width="70" />-->
         <span class="example-spacer"></span>
-        <button mat-icon-button routerLink="/new-order/{{authService.getLoggedInUserId()}}" >
+        <button mat-icon-button routerLink="/home" >
           <mat-icon class="example-icon mr-3">home</mat-icon>
         </button>
-        <button mat-icon-button [matMenuTriggerFor]="menuNotify" *ngIf="this.authService.isLoggedin()">
+        <button mat-icon-button [matMenuTriggerFor]="menuNotify" *ngIf="this.authService.isLoggedin() && this.authService.getLoggedInUserTypeId()!=6">
           <mat-icon [matBadge]="userNotifications?.length" matBadgeColor="warn">notification_important</mat-icon>
         </button>
         <mat-menu #menuNotify="matMenu">
@@ -23,7 +23,7 @@
         <button mat-icon-button routerLink="/new-order/{{authService.getLoggedInUserId()}}" *ngIf="this.authService.isLoggedin() &&this.authService.getLoggedInUserTypeId()==1">
           <mat-icon class="example-icon mr-3">border_color</mat-icon>
         </button>
-        <button mat-icon-button routerLink="/orders/{{authService.getLoggedInUserId()}}" *ngIf="this.authService.isLoggedin() &&this.authService.getLoggedInUserTypeId()!=1">
+        <button mat-icon-button routerLink="/orders/{{authService.getLoggedInUserId()}}" *ngIf="this.authService.isLoggedin() &&this.authService.getLoggedInUserTypeId()!=1 &&this.authService.getLoggedInUserTypeId()!=6">
           <mat-icon class="example-icon mr-3">border_color</mat-icon>
         </button>
         <button mat-icon-button [matMenuTriggerFor]="menu">

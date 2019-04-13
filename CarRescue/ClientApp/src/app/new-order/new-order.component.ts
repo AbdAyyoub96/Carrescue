@@ -4,8 +4,20 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { OrderService } from '../services/order.service';
 import { ActivatedRoute } from '@angular/router';
+import { NotificationService } from '../services/notification.service';
 export interface States {
   name: string;
+  value: number;
+
+}
+export interface CarModels {
+  name: string;
+  value: number;
+
+}
+export interface CarType {
+  name: string;
+  model: number;
   value: number;
 
 }
@@ -16,7 +28,7 @@ export interface States {
 })
 export class NewOrderComponent implements OnInit {
 
-  constructor(private router: ActivatedRoute, private authService: AuthService, private userService: UserService, private orderService: OrderService) { }
+  constructor(private notificationService: NotificationService, private router: ActivatedRoute, private authService: AuthService, private userService: UserService, private orderService: OrderService) { }
   states: States[] = [
     { name: 'Amman', value: 1 }, { name: 'Zarqa', value: 2 },
     { name: 'Irbid', value: 3 }, { name: 'Jerash', value: 4 },
@@ -25,11 +37,28 @@ export class NewOrderComponent implements OnInit {
     { name: 'Al-karak', value: 9 }, { name: 'Tafila', value: 10 },
     { name: 'Maan', value: 11 }, { name: 'Aqaba', value: 12 }
   ];
+  carModels: CarModels[] = [
+    { name: 'KIA', value: 1 }, { name: 'Mercedes', value: 2 },
+   
+  ];
+  carTypes: CarType[] = [
+    { name: 'Obtima', value: 1, model: 1 }, { name: 'Sephia', value: 2, model: 1 },
+    { name: 'Benz', value: 3, model: 2 }, { name: 'E200', value: 4, model: 2 },
+   
+  ];
   userId;
   user;
+  types
   ngOnInit() {
     this.getLoggedInUserId();
     this.getUserServices();
+    
+    
+  }
+  filterTypes()
+  {
+   
+    this.types = this.carTypes.filter(x => x.model == this.carModel.value);
   }
   getLoggedInUserId()
   {
@@ -99,10 +128,12 @@ export class NewOrderComponent implements OnInit {
     this.newOrderForm.controls["userId"].setValue(this.userId);
     
     this.orderService.PostOrder(this.newOrderForm.value).subscribe(response => {
+      this.notificationService.createNotificationService('success', 'Order Success', 'Your Order has been Created ');
+
       this.order = response;
       console.log(response);
     }, error => {
-
+      this.notificationService.createNotificationService('error', 'Order Faailed', error.error);
     });
   }
 
