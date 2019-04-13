@@ -1,0 +1,109 @@
+
+<mat-card>
+  <div class="row">
+    <mat-card-title>{{ 'HOME.TripDetails' | translate }}</mat-card-title><br />
+
+    <mat-grid-list cols="2" rows="1" rowHeight="500px" class="w-100">
+      <mat-grid-tile class="w-50">
+        <mat-list>
+          <mat-list-item> {{ 'HOME.Username' | translate }} : <a [routerLink]="['/profile', order?.user?.id ]"> {{ order?.user?.username }}</a></mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>  {{ 'HOME.locations' | translate }} :{{order?.locations}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item *ngIf="order.status==1"> {{ 'HOME.status' | translate }} : {{ 'HOME.Pending' | translate }}</mat-list-item>
+          <mat-list-item *ngIf="order.status==2"> {{ 'HOME.status' | translate }} : {{ 'HOME.Served' | translate }}</mat-list-item>
+          <mat-list-item *ngIf="order.status==3"> {{ 'HOME.status' | translate }} : {{ 'HOME.Cancelled' | translate }}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item *ngIf="order.serviceTypeId==3">  {{ 'HOME.gasType' | translate }} :{{order?.gasType}}</mat-list-item>
+          <mat-divider *ngIf="order.serviceTypeId==3"></mat-divider>
+          <mat-list-item *ngIf="order.serviceTypeId!=3">  {{ 'HOME.carModel' | translate }} :{{order?.carModel}}</mat-list-item>
+          <mat-divider *ngIf="order.serviceTypeId!=3"></mat-divider>
+          <mat-list-item *ngIf="order.serviceTypeId!=3">  {{ 'HOME.manufacturingYear' | translate }} :{{order?.manuYear}}</mat-list-item>
+          <mat-divider *ngIf="order.serviceTypeId!=3"></mat-divider>
+
+
+
+
+        </mat-list>
+      </mat-grid-tile>
+
+      <mat-grid-tile class="w-50">
+        <mat-list>
+          <mat-list-item *ngIf="order.serviceTypeId==1"> {{ 'HOME.serviceType' | translate }} : {{ 'HOME.Mechanic' | translate }}</mat-list-item>
+          <mat-list-item *ngIf="order.serviceTypeId==2"> {{ 'HOME.serviceType' | translate }} : {{ 'HOME.Elictrician' | translate }}</mat-list-item>
+          <mat-list-item *ngIf="order.serviceTypeId==3"> {{ 'HOME.serviceType' | translate }} : {{ 'HOME.Gas' | translate }}</mat-list-item>
+          <mat-list-item *ngIf="order.serviceTypeId==4"> {{ 'HOME.serviceType' | translate }} : {{ 'HOME.Wensh' | translate }}</mat-list-item>        <mat-divider></mat-divider>
+          <mat-divider></mat-divider>
+          <mat-list-item> {{ 'NewTrip.createdDate' | translate }} :{{order?.createdDate}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item> {{ 'NewTrip.notes' | translate }} :{{order?.notes}}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item *ngIf="order.serviceTypeId==3">  {{ 'HOME.gasQuantity' | translate }} :{{order?.gasQuantity}}</mat-list-item>
+          <mat-divider *ngIf="order.serviceTypeId==3"></mat-divider>
+          <mat-list-item *ngIf="order.serviceTypeId!=3">  {{ 'HOME.carType' | translate }} :{{order?.carType}}</mat-list-item>
+          <mat-divider *ngIf="order.serviceTypeId!=3"></mat-divider>
+          <mat-list-item></mat-list-item>
+          <mat-divider></mat-divider>
+
+        </mat-list>
+      </mat-grid-tile>
+
+
+    </mat-grid-list>
+
+
+    <button *ngIf="order?.userId != authService.getLoggedInUserId()" class="btn btn-danger btn-round m-2" mat-raised-button color="primary" (click)="openOfferDialog(order.id)">{{ 'HOME.sendOffer' | translate }}</button>
+    <button *ngIf="order?.userId == authService.getLoggedInUserId() && order?.status == 1" class="btn btn-danger btn-round m-2" mat-raised-button color="danger" (click)="cancelOrder(order?.id)">{{ 'HOME.Cancel' | translate }} Order</button>
+
+  </div>
+  <div class="row" *ngIf="order?.userId==authService.getLoggedInUserId()">
+    <mat-card class="example-card w-100" *ngFor="let offer of order?.orderOffer">
+
+      <mat-card-header>
+        <mat-card-title><a [routerLink]="['/profile',offer?.userId ]">{{offer?.user?.username}}</a></mat-card-title>
+        <mat-card-subtitle>{{ 'HOME.ExpectedArrivalTime' | translate }}  {{offer?.expectedArrivalTime}} </mat-card-subtitle>
+        <mat-card-subtitle>{{ 'HOME.location' | translate }}  {{offer?.location}} </mat-card-subtitle>
+        <mat-card-subtitle>{{ 'HOME.price' | translate }}  {{offer?.price}} </mat-card-subtitle>
+
+      </mat-card-header>
+      <mat-card-content>
+
+        {{offer?.notes}}
+
+      </mat-card-content>
+      <mat-card-actions>
+        <button *ngIf="offer.status==1" mat-button (color)="primary" (click)="ChangeOfferStatus(offer?.id,2)"> {{ 'HOME.accept' | translate }}</button>
+
+        <button *ngIf="offer.status==1" mat-button (color)="primary" (click)="ChangeOfferStatus(offer?.id,3)">{{ 'HOME.reject' | translate }}</button>
+
+        <mat-hint *ngIf="offer.status==2">Accepted</mat-hint>
+        <mat-hint *ngIf="offer.status==3">Rejected</mat-hint>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div class="row" *ngIf="order?.userId!=authService.getLoggedInUserId()">
+    <mat-card class="example-card w-100" *ngFor="let offer of order?.orderOffer">
+      <div *ngIf="offer?.userId==authService.getLoggedInUserId() &&offer?.status!=4">
+      <mat-card-header>
+        <mat-card-title><a [routerLink]="['/profile',offer?.userId ]">{{offer?.user?.username}}</a></mat-card-title>
+        <mat-card-subtitle>{{ 'HOME.ExpectedArrivalTime' | translate }}  {{offer?.expectedArrivalTime}} </mat-card-subtitle>
+        <mat-card-subtitle>{{ 'HOME.location' | translate }}  {{offer?.location}} </mat-card-subtitle>
+        <mat-card-subtitle>{{ 'HOME.price' | translate }}  {{offer?.price}} </mat-card-subtitle>
+
+      </mat-card-header>
+      <mat-card-content>
+
+        {{offer?.notes}}
+
+      </mat-card-content>
+      <mat-card-actions>
+
+        <button *ngIf="offer.status==1" mat-button (color)="primary" (click)="ChangeOfferStatus(offer?.id,4)">{{ 'HOME.cancel' | translate }}</button>
+        <mat-hint *ngIf="offer.status==1">Pending</mat-hint>
+        <mat-hint *ngIf="offer.status==2">Accepted</mat-hint>
+        <mat-hint *ngIf="offer.status==3">Rejected</mat-hint>
+      </mat-card-actions>
+        </div>
+    </mat-card>
+  </div>
+</mat-card>

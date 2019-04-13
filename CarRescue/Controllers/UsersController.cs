@@ -29,7 +29,7 @@ namespace CarRescue.Controllers
         [Route("GetAllUsers")]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-            return await _context.User
+            return await _context.User.Where(x=>x.Status!=2)
                             .Include(x => x.UserType)
                             .ToListAsync();
         }
@@ -119,10 +119,10 @@ namespace CarRescue.Controllers
             return await _context.User.Where(x => x.Status == (int)UserTypesStatus.InActive)
                                  .ToListAsync();
         }
-
+       
         [HttpGet]
         [Route("ApproveUser/{UserId}")]
-        private async Task<IActionResult> ActivateUser(int UserId)
+        public async Task<IActionResult> ActivateUser(int UserId)
         {
             var user = _context.User.Find(UserId);
 
@@ -150,7 +150,7 @@ namespace CarRescue.Controllers
 
         [HttpGet]
         [Route("BlockUser/{UserId}")]
-        private async Task<IActionResult> BlockUser(int UserId)
+        public async Task<IActionResult> BlockUser(int UserId)
         {
             var user = _context.User.Find(UserId);
 

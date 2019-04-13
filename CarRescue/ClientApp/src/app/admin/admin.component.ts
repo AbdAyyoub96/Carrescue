@@ -13,6 +13,13 @@ import { HttpClient } from 'selenium-webdriver/http';
 import { User } from '../modelInterfaces';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationService } from '../services/notification.service';
+import { DomSanitizer } from '@angular/platform-browser';
+
+export interface States {
+  name: string;
+  value: number;
+
+}
 
 @Component({
     selector: 'app-admin',
@@ -23,7 +30,20 @@ import { NotificationService } from '../services/notification.service';
 export class AdminComponent {
   /** admin ctor */
 
- 
+  states: States[] = [
+    { name: 'Amman', value: 1 }, { name: 'Zarqa', value: 2 },
+    { name: 'Irbid', value: 3 }, { name: 'Jerash', value: 4 },
+    { name: 'Ajloun', value: 5 }, { name: 'Mafraq', value: 6 },
+    { name: 'Madaba', value: 7 }, { name: 'Salt', value: 8 },
+    { name: 'Al-karak', value: 9 }, { name: 'Tafila', value: 10 },
+    { name: 'Maan', value: 11 }, { name: 'Aqaba', value: 12 }
+  ];
+  userState(stateNumber, userType) {
+    if (userType != 1) {
+      let statename = this.states.find(x => x.value == stateNumber);
+      return statename.name;
+    }
+  }
   public allTrips;
   public all;
   public allUsers;
@@ -32,136 +52,79 @@ export class AdminComponent {
   public totalReports;
   public reports;
   public ads;
+  public inActiveUsers;
   totalusers;
   filter = new FormControl("");
   constructor(private authService: AuthService,
-    private tripsService: TripsService,
+    
     public translate: TranslateService,
     public userService: UserService,
     public adminService: AdminService,
-    private router: Router,
+   
     private notificationService:NotificationService,
     public dialog: MatDialog,) {
       this.authService.checkLogin();
   }
+  fileUrl;
   ngOnInit() {
-    this.getAlltrips({}, 1, 5);
+    this.getInactiveUsers();
+    this.getAllUsers();
+    this.getAllreports();
     
-    this.getAllUsers(this.filter.value, 1, 5);
-    this.getAllreports(1, 5);
-    this.getAllAds();
   }
-  
-
-  public getAlltrips(filter = {} as any, pageNo, pageSize) {
-    this.tripsService.getAllTrips(filter, pageNo, pageSize).subscribe(response => {
-      this.all = response;
-      this.allTrips = this.all.trips;
-      console.log(this.allTrips);
+ 
+  getInactiveUsers()
+  {
+    this.adminService.getInactiveUsers().subscribe(response => {
+      this.inActiveUsers = response;
 
     }, error => {
       console.log(error)
     })
   }
-
-  public DeleteAd(id) {
-    this.adminService.deleteAd(id).subscribe(response => {
-      this.notificationService.createNotificationService('success', 'Ad Removed', 'Your Advertisement has been deleted');
-
-      this.ads = this.getAllAds();
-     
+  getAllUsers() {
+    this.adminService.getAllUsers().subscribe(response => {
+      this.allUsers = response;
+      this.totalusers = this.allUsers.length
     }, error => {
       console.log(error)
     })
   }
 
-  public getAllAds() {
-    this.adminService.getAds().subscribe(response => {
-      this.ads = response;
-
-      console.log(this.ads);
-
+  activateUser(id,username)
+  {
+    this.adminService.activateUSer(id).subscribe(response => {
+      this.notificationService.createNotificationService('success', 'Activation Success', '(' + username + ') has been activated successfully');
+      this.ngOnInit();
     }, error => {
-      console.log("failed");
+      console.log("failed")
+      })
+   
+  }
+  blockUser(id,username)
+  {
+    this.adminService.blockUser(id).subscribe(response => {
+      this.notificationService.createNotificationService('success', 'Block Success', '(' + username + ') has been blocked successfully');
+      this.ngOnInit();
+    }, error => {
+      console.log(error)
     })
   }
-  
-  fillAd(AD) {
-
-    console.log("bla bla",AD);
-
-    this.adminService.CreateAd(AD.AdvLink, AD.ImageName).subscribe(response => {
-
-      this.notificationService.createNotificationService('success', 'Ad Success', 'Your Advertisement has been published');
-      console.log("success");
-      this.ads = this.getAllAds();
-    }, error => {
-      console.log("failed");
-
-    });
-  }
-  public getAllreports(pageNo, pageSize) {
-    this.adminService.getReports(pageNo, pageSize).subscribe(response => {
+  public getAllreports() {
+    this.adminService.getReports().subscribe(response => {
       this.allReports = response;
-      this.reports = this.allReports.reports;
-      this.totalReports = this.allReports.totalReports;
-      console.log(this.allReports);
-      console.log(this.totalReports);
+      this.totalReports = this.allReports.length
     }, error => {
       console.log("failed")
     })
   }
-  public reportUsers;
-  public reportUsername;
-  public getUserById(id) {
-    return this.userService.getUserById(id).subscribe(response => {
-      this.reportUsers = response;
-     this.reportUsername = this.reportUsers.username;
-     console.log(this.reportUsername);
-      return this.reportUsername;
-      })
+  
   }
   
  
  
-  public getAllUsers(filter,pageno, pagesize) {
-    this.userService.getUsers(filter,pageno, pagesize).subscribe(res => {
-      this.allUsers = res;
-      this.users = this.allUsers.users;
-      this.totalusers = this.allUsers.totalUsers;
-      console.log(this.totalusers);
-      console.log(this.users);
-
-   
-    }), error => {
-      console.log("failedd");
-      }
-
-  }
-  onPageChanged(page: PageEvent) {
-    console.log(page);
-    this.getAllUsers(this.filter.value, page.pageIndex + 1, page.pageSize)
-  }
-
-  tripsPageChanged(page: PageEvent) {
-    console.log(page);
-    this.getAlltrips({}, page.pageIndex + 1, page.pageSize)
-  }
-
-  reportsPageChanged(page: PageEvent) {
-    console.log(page);
-    this.getAllreports(page.pageIndex + 1, page.pageSize)
-  }
   
   
-  applyUserFilter(filterValue: string) {
-    
-    this.getAllUsers(filterValue.trim().toLowerCase(),1,2);
-    
-  }
 
- 
-  
-}
 
 
