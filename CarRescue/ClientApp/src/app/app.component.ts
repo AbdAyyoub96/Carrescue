@@ -45,22 +45,22 @@ export class AppComponent implements OnInit {
     return false;
   }
   ngOnInit() {
-   // this.getUserNotifications()
+    this.getUserNotifications()
     const source = interval(1000 * 60);
     this.menuItems = ROUTES.filter(menuItem => menuItem);
-   // source.subscribe(val => this.getUserNotifications());
+    source.subscribe(val => this.getUserNotifications());
   }
   
   setPrefLang(value) {
     this.langService.setLang(value)
   }
-  //getUserNotifications() {
-  //  this.notificationService.getUserNotification(this.authService.getLoggedInUserId()).subscribe(response => {
-  //    this.userNotifications = response;
-  //    console.log(this.userNotifications)
-  //  }, error => { console.log("failed") }
-  //  )
-  //}
+  getUserNotifications() {
+    this.notificationService.getUserNotification(this.authService.getLoggedInUserId()).subscribe(response => {
+      this.userNotifications = response;
+      console.log(this.userNotifications)
+    }, error => { console.log("failed") }
+    )
+  }
   navigateToTrip(link)
   {
     this.router.navigate(['/' + link]);

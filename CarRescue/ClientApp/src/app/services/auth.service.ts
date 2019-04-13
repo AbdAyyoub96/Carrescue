@@ -20,6 +20,11 @@ export class AuthService {
     return this.jwtService.decodeToken(token)[tokenSoapLink + "name"]
 
   }
+  getLoggedInUserTypeId() {
+    this.token = localStorage.getItem("userType")
+    return this.token;
+
+  }
 
   getLoggedInUserEmail() {
     let token = localStorage.getItem("jwt")
@@ -28,7 +33,14 @@ export class AuthService {
 
   checkLogin() {
     if (!this.isLoggedin()) {
-      this.router.navigate(["login"])
+      this.router.navigate(["home"])
+    }
+    else
+    {
+      let userType = localStorage.getItem("userType")
+
+      if (userType == '1') { this.router.navigate(["/new-order/" + this.getLoggedInUserId()]); }
+      else { this.router.navigate(["/orders/" + this.getLoggedInUserId()])}
     }
   }
 

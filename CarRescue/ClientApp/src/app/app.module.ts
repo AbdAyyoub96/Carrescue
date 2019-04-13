@@ -37,6 +37,7 @@ import { OrderService } from './services/order.service';
 import { SendOfferdialogComponent } from './send-offerdialog/send-offerdialog.component';
 import { OrderofferService } from './services/orderoffer.service';
 import { OrderDetailsComponent } from './order-details/order-details.component';
+import { HomeComponent } from './home/home.component';
 
 // Configs 
 
@@ -65,6 +66,7 @@ export function tokenGetter() {
     SendOfferdialogComponent,
     ReportComponent,
     OrderDetailsComponent,
+    HomeComponent
    
   ],
   imports: [
@@ -108,6 +110,7 @@ export function tokenGetter() {
       { path: 'send-offer', component: SendOfferdialogComponent },
       { path: 'report', component: ReportComponent },
       { path: 'order-details/:id', component: OrderDetailsComponent },
+      { path: 'home', component: HomeComponent },
      
 
     ])

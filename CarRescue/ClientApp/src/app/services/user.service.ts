@@ -35,7 +35,7 @@ export class UserService {
     return this.httpClient.get(baseUrl + getUserTypesRoute);
   }
   getUserServices() {
-    return this.httpClient.get(baseUrl + getUserServicesRoute);
+    return this.httpClient.get("api/Services/" + "GetAllService");
   }
   createUser(user) {
     console.log(user);
@@ -47,10 +47,15 @@ export class UserService {
     console.log(formData);
     return this.httpClient.post(baseUrl + postAttachmentRoute , formData);
   }
-  //----------------------------------------------------------------------------------------------------------
+  updateUserInfo(id, user) {
+    console.log(id)
+    return this.httpClient.put(baseUrl + updateUserRoute + id, JSON.stringify(user), httpOptions);
+  }
   getUserDetialsById(id) {
     return this.httpClient.get(baseUrl + getUserRoute + id);
   }
+  //----------------------------------------------------------------------------------------------------------
+ 
 
   getUserById(id) {
     return this.httpClient.get(baseUrl +  id);
@@ -67,9 +72,5 @@ export class UserService {
     return this.httpClient.post(baseUrl + "Login", JSON.stringify(user), httpOptions)
      }
 
-  updateUserInfo(id,user)
-  {
-    console.log(id)
-    return this.httpClient.put(baseUrl + updateUserRoute + id, JSON.stringify(user), httpOptions);
-  }
+  
 }

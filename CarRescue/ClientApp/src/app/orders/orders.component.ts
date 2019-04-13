@@ -29,8 +29,8 @@ export class OrdersComponent implements OnInit {
   getOrders(type) {
     this.orderService.GetAllOrders(type).subscribe(response => {
       this.orders = response;
-      this.order = Array(this.orders);
-      console.log(this.order);
+     
+     
     }, error => {
 
     });
@@ -66,7 +66,7 @@ export class OrdersComponent implements OnInit {
     this.router.params.subscribe(param => {
       this.userService.getUserDetialsById(param.id).subscribe(response => {
         this.user = response;
-        this.userType = this.user.userTypeId-1;
+        this.userType = this.user.userTypeId;
         console.log(this.user);
         this.getOrders(this.userType);
       })

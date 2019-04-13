@@ -122,12 +122,14 @@
             <br />
 
             <div class="col-md-4">
-              <mat-form-field>              
+              <mat-form-field>
 
                 <input matInput placeholder="{{ 'HOME.MobileNumber' | translate }}" formControlName="MobileNumber" required>
 
                 <mat-icon matSuffix>phone</mat-icon>
-
+                <mat-error *ngIf="MobileNumber.touched && MobileNumber.invalid">
+                 Maximum 10 numbers allowed
+                </mat-error>
                 <mat-error>
                   {{ 'HOME.MobileNumberrequired' | translate }}
                 </mat-error>

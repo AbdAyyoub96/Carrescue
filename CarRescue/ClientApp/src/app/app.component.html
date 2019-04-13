@@ -6,17 +6,26 @@
       <mat-toolbar color="primary" style="margin-bottom:10px;">
         <!--<img src="2.png" height="70" width="70" />-->
         <span class="example-spacer"></span>
-        <button mat-icon-button [matMenuTriggerFor]="menuNotify" *ngIf="this.authService.isLoggedin()" >
+        <button mat-icon-button routerLink="/new-order/{{authService.getLoggedInUserId()}}" >
+          <mat-icon class="example-icon mr-3">home</mat-icon>
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="menuNotify" *ngIf="this.authService.isLoggedin()">
           <mat-icon [matBadge]="userNotifications?.length" matBadgeColor="warn">notification_important</mat-icon>
         </button>
         <mat-menu #menuNotify="matMenu">
-          <div  mat-menu-item *ngFor="let notfication of userNotifications">
+          <div mat-menu-item *ngFor="let notfication of userNotifications">
             <button mat-button (click)="navigateToTrip(notfication.notifyLink)">
-            <span>{{notfication.notificationText}}</span>
-              </button>
+              <span>{{notfication.notificationText}}</span>
+            </button>
           </div>
-         
+
         </mat-menu>
+        <button mat-icon-button routerLink="/new-order/{{authService.getLoggedInUserId()}}" *ngIf="this.authService.isLoggedin() &&this.authService.getLoggedInUserTypeId()==1">
+          <mat-icon class="example-icon mr-3">border_color</mat-icon>
+        </button>
+        <button mat-icon-button routerLink="/orders/{{authService.getLoggedInUserId()}}" *ngIf="this.authService.isLoggedin() &&this.authService.getLoggedInUserTypeId()!=1">
+          <mat-icon class="example-icon mr-3">border_color</mat-icon>
+        </button>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon class="example-icon mr-3">account_circle</mat-icon>
         </button>
@@ -30,19 +39,19 @@
           <button mat-menu-item routerLink="/profile/{{authService.getLoggedInUserId()}}" *ngIf="this.authService.isLoggedin()">
             <span>{{ 'HOME.MyProfile' | translate }}</span>
           </button>
-        
+
           <button mat-menu-item (click)="this.authService.Logout()" *ngIf="this.authService.isLoggedin()">
             <span>{{ 'HOME.Logout' | translate }}</span>
           </button>
         </mat-menu>
-        <button mat-icon-button [matMenuTriggerFor]="menuLang" >
+        <button mat-icon-button [matMenuTriggerFor]="menuLang">
           <mat-icon class="example-icon mr-3">language</mat-icon>
         </button>
         <mat-menu #menuLang="matMenu">
           <button mat-menu-item (click)="translate.use('ar'); setPrefLang('ar')">
             <span>العربية</span>
           </button>
-         
+
           <button mat-menu-item (click)="translate.use('en'); setPrefLang('en')">
             <span>English</span>
           </button>

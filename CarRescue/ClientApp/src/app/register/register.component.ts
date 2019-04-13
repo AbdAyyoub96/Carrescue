@@ -29,12 +29,12 @@ export class RegisterComponent implements OnInit {
     fullName: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-    username: new FormControl('', [Validators.required,Validators.minLength(6)]),
-    MobileNumber: new FormControl('', Validators.required),
+    username: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    MobileNumber: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]),
     rePass: new FormControl('', Validators.required),
     userTypeId: new FormControl('', Validators.required),
     attachment: new FormControl(''),
-    state: new FormControl('', Validators.required)
+    state: new FormControl('')
 
   }, { validators: this.passValidator })
 

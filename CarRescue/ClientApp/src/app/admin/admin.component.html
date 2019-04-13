@@ -54,7 +54,7 @@
                     <th>{{ 'HOME.attatchment' | translate }} </th>
                     <th>{{ 'HOME.state' | translate }} </th>
                     <th>{{ 'HOME.action' | translate }} </th>
-
+                    
                   </tr>
                 </thead>
                 <tbody>
@@ -66,7 +66,7 @@
                     <td>{{user.userTypeId}}</td>
                     <td>{{user.mobileNumber}}</td>
                     
-                    <td><a href="fileUrl" download="{{user.attachment}}" mat-raised-button color="primary"><i class="material-icons lg">arrow_downward</i>{{user.attachment}}</a></td>
+                    <td><a href="../../../../wwwroot/uploads/UserAttachments/10 April 2019/download.jpg" download="{{user.attachment}}" mat-raised-button color="primary"><i class="material-icons lg">arrow_downward</i>{{user.attachment}}</a></td>
                     <td>{{userState(user.state,user.userTypeId)}}</td>
                     <td><button mat-fab (click)="activateUser(user.id,user.username)" color="primary"><i class="material-icons lg">done</i></button></td>
                   </tr>

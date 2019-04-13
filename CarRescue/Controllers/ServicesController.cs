@@ -22,7 +22,8 @@ namespace CarRescue.Controllers
 
         // GET: api/Services
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Service>>> GetService()
+        [Route("GetAllService")]
+        public async Task<ActionResult<IEnumerable<Service>>> GetAllService()
         {
             return await _context.Service.ToListAsync();
         }

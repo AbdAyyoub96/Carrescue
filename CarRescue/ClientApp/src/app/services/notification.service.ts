@@ -3,7 +3,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { HttpClient } from '@angular/common/http';
 
 const baseUrl = 'api/Notifications/'
-const getNotificationsRoute = 'GetNotifications/';
+const getNotificationsRoute = 'GetAllNotifications/';
 @Injectable()
 export class NotificationService {
 
