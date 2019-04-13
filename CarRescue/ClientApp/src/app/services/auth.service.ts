@@ -35,12 +35,9 @@ export class AuthService {
     if (!this.isLoggedin()) {
       this.router.navigate(["home"])
     }
-    else
+    if (this.isLoggedin())
     {
-      let userType = localStorage.getItem("userType")
-
-      if (userType == '1') { this.router.navigate(["/new-order/" + this.getLoggedInUserId()]); }
-      else { this.router.navigate(["/orders/" + this.getLoggedInUserId()])}
+      
     }
   }
 

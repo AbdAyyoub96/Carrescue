@@ -71,10 +71,10 @@ namespace CarRescue.Controllers
         }
         // GET: api/OrderOffers
         [HttpGet]
-        [Route("GetOffersByOrderId/{orderId}")]
-        public async Task<ActionResult<IEnumerable<OrderOffer>>> GetOrderOffer(int orderId)
+        [Route("GetOffersByOrderId/{userID}")]
+        public async Task<ActionResult<IEnumerable<OrderOffer>>> GetOrderOffer(int userID)
         {
-            return await _context.OrderOffer.Where(x => x.OrderId == orderId)
+            return await _context.OrderOffer.Where(x => x.Order.UserId == userID)
                         .Include(x => x.User)
                         .ToListAsync();
         }

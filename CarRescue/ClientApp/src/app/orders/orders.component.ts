@@ -26,15 +26,7 @@ export class OrdersComponent implements OnInit {
     this.getLoggedInUserId();
    
   }
-  getOrders(type) {
-    this.orderService.GetAllOrders(type).subscribe(response => {
-      this.orders = response;
-     
-     
-    }, error => {
-
-    });
-  }
+  
   openOfferDialog(id) {
     console.log(id);
     this.SendOfferDialogRef = this.dialog.open(SendOfferdialogComponent, { data: { orderId: id ,  userId: this.user.id }});
@@ -57,9 +49,16 @@ export class OrdersComponent implements OnInit {
   }
   onPageChanged(page: PageEvent) {
     console.log(page);
-    this.order.slice(0, 1)
-    this.orders = this.order;
-    console.log(this.orders.slice(0, 1))
+    this.fillTable({}, page.pageIndex + 1, page.pageSize)
+  }
+  fillTable(filter = {} as any, pageNo, pageSize) {
+    this.orderService.GetAllOrders(this.authService.getLoggedInUserId(), filter, pageNo, pageSize).subscribe(response => {
+      this.orders = response;
+    }, error => {
+      console.log(error)
+    })
+
+
   }
 
   getLoggedInUserId() {
@@ -68,7 +67,7 @@ export class OrdersComponent implements OnInit {
         this.user = response;
         this.userType = this.user.userTypeId;
         console.log(this.user);
-        this.getOrders(this.userType);
+        this.fillTable( {}, 1, 10);
       })
     })
   }

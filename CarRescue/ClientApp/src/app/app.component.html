@@ -14,8 +14,8 @@
         </button>
         <mat-menu #menuNotify="matMenu">
           <div mat-menu-item *ngFor="let notfication of userNotifications">
-            <button mat-button (click)="navigateToTrip(notfication.notifyLink)">
-              <span>{{notfication.notificationText}}</span>
+            <button mat-button (click)="navigateToTrip(notfication.link)">
+              <span>{{notfication.message}}</span>
             </button>
           </div>
 

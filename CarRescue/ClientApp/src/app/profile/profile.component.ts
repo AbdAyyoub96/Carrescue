@@ -37,6 +37,7 @@ export class ProfileComponent implements OnInit {
   displayedColumns = ['fullName', 'username', 'email', 'password'];  
   url = "https://cdn2.iconfinder.com/data/icons/business-management-52/96/Artboard_20-512.png";
   user = {} as any;
+  userOffers;
   user2 = {} as any;
  
   /** profile ctor */
@@ -60,7 +61,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.router.params.subscribe(param => { 
       this.userService.getUserDetialsById(param.id).subscribe(response => {
-      this.user = response;
+        this.user = response;
+        this.getUserOffers();
       console.log(this.user);
     })
     })
@@ -68,7 +70,15 @@ export class ProfileComponent implements OnInit {
  
   
 
-
+  getUserOffers()
+  {
+    this.router.params.subscribe(param => {
+      this.profileService.getUserOffers(param.id).subscribe(response => {
+        this.userOffers = response;
+        console.log(this.user);
+      })
+    })
+  }
   openRatingDialog()
   {
     this.RatingDialogRef = this.dialog.open(RatingComponent);

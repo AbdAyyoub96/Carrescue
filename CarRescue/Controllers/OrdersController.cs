@@ -51,7 +51,7 @@ namespace CarRescue.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllOrdersForProvider/{UserId}")]
+        [Route("GetAllOrdersForProvider/{UserId}/{PageNo}/{PageSize}")]
         public async Task<IActionResult> GetAllOrdersForProvider(int UserId  ,int PageNo = 1, int PageSize = 10)
         {
             var user = _context.User.Find(UserId);

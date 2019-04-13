@@ -80,7 +80,7 @@ export class RegisterComponent implements OnInit {
     
     this.userService.saveProfilePic(file).subscribe(response => {
       this.attach = response;
-      this.signUpForm.controls["attachment"].setValue(this.attach.fileName);
+      this.signUpForm.controls["attachment"].setValue(this.attach.attachmentPath);
       console.log(this.signUpForm.value)
       this.notificationService.createNotificationService('success', 'Uploading Success', 'Profile picture uploaded successfully');      
       console.log(response)

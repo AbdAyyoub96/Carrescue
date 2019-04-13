@@ -48,7 +48,7 @@
             </mat-list-item>
 
             <mat-divider></mat-divider>
-           
+
             <mat-list-item>
               <div *ngIf="user.state !== null">
                 <i class="material-icons">language</i><b>{{ 'HOME.state' | translate }} </b>{{userState(user.state)}}
@@ -72,41 +72,41 @@
                 <i class="material-icons">phone_iphone</i><b>{{ 'HOME.MobileNumber' | translate }} </b> {{ user.mobileNumber }}
               </div>
             </mat-list-item>
-           
+
           </mat-list>
         </mat-tab>
         <mat-tab label="{{ 'HOME.orderLabel' | translate }}" *ngIf="user.userTypeId==1 &&user.id ==authService.getLoggedInUserId()">
-  
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>{{ 'HOME.details' | translate }}</th>
-                  <th>{{ 'HOME.createdDate' | translate }} </th>
-                  <th>{{ 'HOME.serviceType' | translate }} </th>
-                  <th>{{ 'HOME.Status' | translate }} </th>
-                  <th>{{ 'HOME.notes' | translate }} </th>
 
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let order of user.order">
-                  <td *ngIf="order.status==1"><a [routerLink]="['/order-details',order.id ]">{{order.id}}</a></td>
-                  <td *ngIf="order.status!=1">{{order.id}}</td>
-                  <td>{{order.createdDate}}</td>
-                  <td *ngIf="order.serviceTypeId==1">{{ 'HOME.Mechanic' | translate }}</td>
-                  <td *ngIf="order.serviceTypeId==2">{{ 'HOME.Elictrician' | translate }}</td>
-                  <td *ngIf="order.serviceTypeId==3">{{ 'HOME.Gas' | translate }}</td>
-                  <td *ngIf="order.status==1">{{ 'HOME.Pending' | translate }}</td>
-                  <td *ngIf="order.status==2">{{ 'HOME.Served' | translate }}</td>
-                  <td *ngIf="order.status==4">{{ 'HOME.Cancelled' | translate }}</td>
-                  <td>{{order.notes}}</td>
-                </tr>
-              </tbody>
-            </table>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>{{ 'HOME.details' | translate }}</th>
+                <th>{{ 'HOME.createdDate' | translate }} </th>
+                <th>{{ 'HOME.serviceType' | translate }} </th>
+                <th>{{ 'HOME.Status' | translate }} </th>
+                <th>{{ 'HOME.notes' | translate }} </th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of user.order">
+                <td *ngIf="order.status==1"><a [routerLink]="['/order-details',order.id ]">{{order.id}}</a></td>
+                <td *ngIf="order.status!=1">{{order.id}}</td>
+                <td>{{order.createdDate}}</td>
+                <td *ngIf="order.serviceTypeId==1">{{ 'HOME.Mechanic' | translate }}</td>
+                <td *ngIf="order.serviceTypeId==2">{{ 'HOME.Elictrician' | translate }}</td>
+                <td *ngIf="order.serviceTypeId==3">{{ 'HOME.Gas' | translate }}</td>
+                <td *ngIf="order.status==1">{{ 'HOME.Pending' | translate }}</td>
+                <td *ngIf="order.status==2">{{ 'HOME.Served' | translate }}</td>
+                <td *ngIf="order.status==4">{{ 'HOME.Cancelled' | translate }}</td>
+                <td>{{order.notes}}</td>
+              </tr>
+            </tbody>
+          </table>
 
 
-</mat-tab>
-        <mat-tab label="{{ 'HOME.offers' | translate }}" *ngIf="user.id ==authService.getLoggedInUserId()">
+        </mat-tab>
+        <mat-tab label="{{ 'HOME.offers' | translate }}" *ngIf="user.id ==authService.getLoggedInUserId()&&user.userTypeId==1">
           <table class="table">
             <thead>
               <tr>
@@ -120,7 +120,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let offer of user.orderOffer">
+              <tr *ngFor="let offer of userOffers">
                 <td><a [routerLink]="['/order-details',offer.orderId ]">{{offer.orderId}}</a></td>
                 <td><a [routerLink]="['/profile',offer.userId ]">{{offer.userId}}</a></td>
                 <td *ngIf="offer.status==1">{{ 'HOME.Pending' | translate }}</td>
@@ -135,27 +135,58 @@
               </tr>
             </tbody>
           </table>
-       
+
+        </mat-tab>
+        <mat-tab label="{{ 'HOME.offers' | translate }}" *ngIf="user.id ==authService.getLoggedInUserId()&&user.userTypeId!=1">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>{{ 'HOME.orderId' | translate }} </th>
+                <th>{{ 'HOME.ProviderId' | translate }} </th>
+                <th>{{ 'HOME.Status' | translate }} </th>
+                <th>{{ 'HOME.ProviderLocation' | translate }} </th>
+                <th>{{ 'HOME.ExpectedArrivalTime' | translate }} </th>
+                <th>{{ 'HOME.price' | translate }} </th>
+                <th>{{ 'HOME.notes' | translate }} </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let offer of user?.orderOffer">
+                <td><a [routerLink]="['/order-details',offer.orderId ]">{{offer.orderId}}</a></td>
+                <td><a [routerLink]="['/profile',offer.userId ]">{{offer.userId}}</a></td>
+                <td *ngIf="offer.status==1">{{ 'HOME.Pending' | translate }}</td>
+                <td *ngIf="offer.status==2">{{ 'HOME.Approved' | translate }}</td>
+                <td *ngIf="offer.status==3">{{ 'HOME.Rejected' | translate }}</td>
+                <td *ngIf="offer.status==4">{{ 'HOME.Cancelled' | translate }}</td>
+
+                <td>{{ offer.location }}</td>
+                <td>{{ offer.expectedArrivalTime }}</td>
+                <td>{{ offer.price }}</td>
+                <td>{{ offer.notes }}</td>
+              </tr>
+            </tbody>
+          </table>
+
         </mat-tab>
         <mat-tab label="{{ 'HOME.Ratings' | translate }}">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>{{ 'HOME.Username' | translate }} </th>
-                  <th>{{ 'HOME.RateValue' | translate }} </th>
-                  <th>{{ 'HOME.Note' | translate }} </th>
-                  
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let R of user.ratingRatedUserNavigation">
-                  <th scope="row">{{R.userId}}</th>
-                  <td> {{ R.rating1 }}<i class="material-icons">star_rate</i></td>
-                  <td>{{ R.note }}</td>
-   
-                </tr>
-              </tbody>
-            </table>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>{{ 'HOME.Username' | translate }} </th>
+                <th>{{ 'HOME.RateValue' | translate }} </th>
+                <th>{{ 'HOME.Note' | translate }} </th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let R of user.ratingRatedUserNavigation">
+                <th scope="row">{{R.userId}}</th>
+                <td> {{ R.rating1 }}<i class="material-icons">star_rate</i></td>
+                <td>{{ R.note }}</td>
+
+              </tr>
+            </tbody>
+          </table>
         </mat-tab>
       </mat-tab-group>
     </mat-card>
