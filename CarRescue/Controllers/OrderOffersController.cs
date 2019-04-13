@@ -51,12 +51,12 @@ namespace CarRescue.Controllers
                 switch (offer.Status)
                 {
                     case (int)Models.Enums.OfferStatus.Accepted: 
-                            notificationProvider.CreateNewNotification(order.UserId, offer.UserId,  NotificationTemplates.AcceptOffer, "");
+                            notificationProvider.CreateNewNotification(order.UserId, offer.UserId,  NotificationTemplates.AcceptOffer, "order-details/"+order.Id);
                             orderProcesses.CloseOrder(offer.OrderId , (int)Models.Enums.OrderStatus.Served);
                          break;
 
                     case (int)Models.Enums.OfferStatus.Rejected:
-                        notificationProvider.CreateNewNotification(order.UserId, offer.UserId, NotificationTemplates.RejectOffer, "");
+                        notificationProvider.CreateNewNotification(order.UserId, offer.UserId, NotificationTemplates.RejectOffer, "order-details/" + order.Id);
                         break;
                 }
 
@@ -138,7 +138,7 @@ namespace CarRescue.Controllers
                 _context.OrderOffer.Add(orderOffer);
                 
                 await _context.SaveChangesAsync();
-                notificationProvider.CreateNewNotification(orderOffer.UserId, order.UserId, NotificationTemplates.CreateNewOffer, "");
+                notificationProvider.CreateNewNotification(orderOffer.UserId, order.UserId, NotificationTemplates.CreateNewOffer, "order-details/" + order.Id);
             }
             catch (Exception e)
             {

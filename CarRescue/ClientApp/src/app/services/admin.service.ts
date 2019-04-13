@@ -16,41 +16,37 @@ const httpOptions = {
 };
 
 
-const baseUrl = 'api/Reports/'
-const getReportRoute = 'AllReports';
-const adsUrl = 'api/Users/';
-const getAdsRoute = 'GetAllAds';
+const UsersUrl = '/api/Users/';
+const reportUrl = '/api/Reports/';
+const getAllUsersRoute = 'GetAllUsers';
+const activateUSerRoute = 'ApproveUser/';
+const getInActiveUsers = 'GetAllApprovals';
 
-const postAdRoute = 'CreateNewAd/';
-const deleteAdRoute = 'DeleteAd/';
+const blockUserRoute = 'BlockUser/';
+const getReportRoute = 'GetAllReports';
 @Injectable()
 export class AdminService {
   constructor(private httpClient: HttpClient, private router: Router) {
 
   }
 
-  
-  getReports(pageNo, pageSize) {
-    return this.httpClient.get(baseUrl + getReportRoute + "?PageNo=" + pageNo + "&PageSize=" + pageSize);
+  getInactiveUsers()
+  {
+    return this.httpClient.get(UsersUrl + getInActiveUsers);
+  }
+  getAllUsers() {
+    return this.httpClient.get(UsersUrl + getAllUsersRoute);
+  }
+  activateUSer(id)
+  {
+    return this.httpClient.get(UsersUrl + activateUSerRoute + id);
+  }
+  blockUser(id)
+  {
+    return this.httpClient.get(UsersUrl + blockUserRoute + id);
+  }
+  getReports() {
+    return this.httpClient.get(reportUrl + getReportRoute);
   }
 
-  getAds() {
-    return this.httpClient.get(adsUrl + getAdsRoute);
-  }
-
-  deleteAd(id) {
-    return this.httpClient.get(adsUrl + deleteAdRoute+ id);
-  }
-
-  CreateAd(ad, file: File) {
-
-    const formData: FormData = new FormData();
-    console.log(ad);
-    formData.append('AdvLink', ad);
-    formData.append('File', file);
-   
-    console.log(formData);
-    return this.httpClient.post(adsUrl + postAdRoute , formData);
-   
-  }
 }
