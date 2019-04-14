@@ -3,7 +3,7 @@
    
 
     <div class="example-sidenav-content">
-      <mat-toolbar color="primary" style="margin-bottom:10px;">
+      <mat-toolbar color="primary" style="margin-bottom:10px;"  *ngIf="getRouterLink()">
         <!--<img src="2.png" height="70" width="70" />-->
         <span class="example-spacer"></span>
         <button mat-icon-button routerLink="/home" >
@@ -59,7 +59,7 @@
 
 
       </mat-toolbar>
-      <div class="container pad">
+      <div class="pad" [class.container]="getRouterLink()">
         <router-outlet></router-outlet>
         <simple-notifications></simple-notifications>
       </div>

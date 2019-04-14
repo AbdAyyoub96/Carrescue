@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
     private langService: InternationalizationService, private notificationService: NotificationService) {
 
     this.langService.getLanguage()
-    this.authService.checkLogin();
+    
   }
   
   isLoginOrSignUp() {
@@ -45,6 +45,7 @@ export class AppComponent implements OnInit {
     return false;
   }
   ngOnInit() {
+    console.log(this.router.url);
     this.getUserNotifications()
     const source = interval(1000 * 60);
     this.menuItems = ROUTES.filter(menuItem => menuItem);
@@ -53,6 +54,10 @@ export class AppComponent implements OnInit {
   
   setPrefLang(value) {
     this.langService.setLang(value)
+  }
+  getRouterLink() {
+    return this.router.url == '/home' ? false : true;
+
   }
   getUserNotifications() {
     this.notificationService.getUserNotification(this.authService.getLoggedInUserId()).subscribe(response => {

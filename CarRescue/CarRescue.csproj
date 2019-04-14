@@ -31,6 +31,36 @@
     <Content Include="ClientApp\src\assets\slider3.jpg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\.editorconfig" />
+    <None Include="wwwroot\.eslintrc" />
+    <None Include="wwwroot\.stylelintrc" />
+    <None Include="wwwroot\Agnes.pdf" />
+    <None Include="wwwroot\CHANGELOG.md" />
+    <None Include="wwwroot\dist\css\style.css" />
+    <None Include="wwwroot\dist\js\main.min.js" />
+    <None Include="wwwroot\LICENSE" />
+    <None Include="wwwroot\package-sample.json" />
+    <None Include="wwwroot\README.md" />
+    <None Include="wwwroot\src\js\main.js" />
+    <None Include="wwwroot\src\scss\abstracts\_functions.scss" />
+    <None Include="wwwroot\src\scss\abstracts\_include-media.scss" />
+    <None Include="wwwroot\src\scss\abstracts\_mixins.scss" />
+    <None Include="wwwroot\src\scss\abstracts\_variables.scss" />
+    <None Include="wwwroot\src\scss\base\_base.scss" />
+    <None Include="wwwroot\src\scss\base\_helpers.scss" />
+    <None Include="wwwroot\src\scss\base\_typography.scss" />
+    <None Include="wwwroot\src\scss\components\_buttons.scss" />
+    <None Include="wwwroot\src\scss\layout\_features.scss" />
+    <None Include="wwwroot\src\scss\layout\_footer.scss" />
+    <None Include="wwwroot\src\scss\layout\_header.scss" />
+    <None Include="wwwroot\src\scss\layout\_hero.scss" />
+    <None Include="wwwroot\src\scss\layout\_main.scss" />
+    <None Include="wwwroot\src\scss\layout\_pricing.scss" />
+    <None Include="wwwroot\src\scss\style.scss" />
+    <None Include="wwwroot\src\scss\_normalize.scss" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
